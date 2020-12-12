@@ -1,4 +1,4 @@
-import { graphql, Link } from 'gatsby';
+import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 // import Img from 'gatsby-image';
@@ -6,12 +6,13 @@ import Layout from '../components/layout';
 // import blogPostStyles from './blogPost.module.css';
 // import SEO from '../components/seo';
 
-export default function StorefrontTemplate({ data, pageContext }) {
+export default function ProductTemplate({ data, pageContext }) {
   // const { markdownRemark } = data;
   // const { frontmatter, html } = markdownRemark;
   // const {
   //   title, publishDate, tagline, image, imageAttribution,
   // } = frontmatter;
+  console.log(pageContext);
   return (
     <Layout>
       {/* <SEO title={title} /> */}
@@ -23,14 +24,14 @@ export default function StorefrontTemplate({ data, pageContext }) {
               maxHeight: 500, width: '100%', objectFit: 'cover', objectPosition: '50%',
             }}
           /> */}
-          {pageContext.fakeDescription}
+          <p>A Cool Product:</p>
+          {pageContext.productName}
         </div>
-        <Link to={`${pageContext.pagePath}0`}>See first product</Link>
       </div>
     </Layout>
   );
 }
-StorefrontTemplate.propTypes = {
+ProductTemplate.propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
