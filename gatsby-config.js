@@ -1,28 +1,40 @@
+const sass = require('sass');
+
 module.exports = {
+  pathPrefix: '/ai-storefront-generator',
+  siteMetadata: {
+    title: 'Beau Davenport',
+    description: 'Full-Stack JS Dev',
+    author: '@beau_dav',
+  },
   plugins: [
-    "gatsby-plugin-sass",
-    "gatsby-plugin-image",
-    "gatsby-plugin-react-helmet",
-    "gatsby-plugin-offline",
-    "gatsby-plugin-manifest",
-    "gatsby-transformer-remark",
-    "gatsby-plugin-sharp",
-    "gatsby-transformer-sharp",
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-plugin-sass',
       options: {
-        name: "images",
-        path: "./src/images/",
+        implementation: sass,
       },
-      __key: "images",
+    },
+    'gatsby-plugin-image',
+    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-offline',
+    // "gatsby-plugin-manifest",
+    'gatsby-transformer-remark',
+    'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: `${__dirname}/src/prompts`,
+        name: 'markdown-pages',
+      },
     },
     {
-      resolve: "gatsby-source-filesystem",
+      resolve: 'gatsby-source-filesystem',
       options: {
-        name: "pages",
-        path: "./src/pages/",
+        name: 'pages',
+        path: './src/pages/',
       },
-      __key: "pages",
+      __key: 'pages',
     },
   ],
 };
