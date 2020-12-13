@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useStaticQuery, graphql } from 'gatsby';
+import { useStaticQuery, graphql, Link } from 'gatsby';
+import Footer from './footer';
 
-const Layout = ({ children }) =>
+const Layout = ({ title, navHomePath, children }) =>
 // const data = useStaticQuery(graphql`
 //   query SiteTitleQuery {
 //     site {
@@ -15,45 +16,38 @@ const Layout = ({ children }) =>
 // `);
 
   (
-    <div className="container">
-      <nav className="navbar" role="navigation" aria-label="main navigation">
-        <div className="navbar-brand">
-          <p>AI Storefront Generator</p>
-        </div>
-
-        <div id="navbarBasicExample" className="navbar-menu">
-          <div className="navbar-start">
-            <a className="navbar-item">
-              Home
-            </a>
-
-            <a className="navbar-item">
-              Documentation
-            </a>
+    <div>
+      <div className="container">
+        <nav className="navbar" role="navigation" aria-label="main navigation">
+          <div className="navbar-brand">
+            <Link to={navHomePath} className="navbar-item">
+              <strong>{title}</strong>
+            </Link>
           </div>
+          <div id="navbarBasicExample" className="navbar-menu">
+            <div className="navbar-start">
+              <a className="navbar-item">
+                Products
+              </a>
+              <a className="navbar-item">
+                About Us
+              </a>
+            </div>
 
-          <div className="navbar-end">
-            <div className="navbar-item">
-              <div className="buttons">
-                <a className="button is-primary">
-                  <strong>View All</strong>
-                </a>
+            <div className="navbar-end">
+              <div className="navbar-item">
+                <div className="buttons">
+                  <Link to="/" className="button is-link">
+                    Back
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </nav>
-      {children}
-      <div>
-        <footer>
-          © Beau Davenport,
-          {' '}
-          {new Date().getFullYear()}
-          . Built with
-          {' '}
-          <a href="https://www.gatsbyjs.org">Gatsby</a>
-        </footer>
+        </nav>
+        {children}
       </div>
+      <Footer />
     </div>
   );
 Layout.propTypes = {

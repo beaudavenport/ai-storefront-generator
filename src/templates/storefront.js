@@ -1,31 +1,40 @@
 import { graphql, Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
-// import Img from 'gatsby-image';
+import Img from 'gatsby-image';
 import Layout from '../components/layout';
 // import blogPostStyles from './blogPost.module.css';
 // import SEO from '../components/seo';
 
 export default function StorefrontTemplate({ data, pageContext }) {
-  // const { markdownRemark } = data;
-  // const { frontmatter, html } = markdownRemark;
-  // const {
-  //   title, publishDate, tagline, image, imageAttribution,
-  // } = frontmatter;
+  const { allSitePage } = data;
   return (
-    <Layout>
+    <Layout title={pageContext.name} navHomePath={pageContext.pagePath}>
       {/* <SEO title={title} /> */}
       <div>
         <div>
-          {/* <Img
-            fluid={image.childImageSharp.fluid}
-            style={{
-              maxHeight: 500, width: '100%', objectFit: 'cover', objectPosition: '50%',
-            }}
-          /> */}
           {pageContext.fakeDescription}
         </div>
-        <Link to={`${pageContext.pagePath}0`}>See first product</Link>
+        {allSitePage.edges.map((edge) => (
+          <div className="box">
+            <article className="media">
+              <div className="media-left">
+                <figure className="image">
+                  <Img
+                    fixed={edge.node.productImage.childImageSharp.fixed}
+                    alt={edge.node.context.productImageAlt}
+                  />
+                </figure>
+              </div>
+              <div className="media-right">
+                <div className="content">
+                  <p><strong>{edge.node.context.productName}</strong></p>
+                  <Link to={edge.node.context.pagePath} className="button is-link">View</Link>
+                </div>
+              </div>
+            </article>
+          </div>
+        ))}
       </div>
     </Layout>
   );
@@ -34,27 +43,28 @@ StorefrontTemplate.propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-// export const pageQuery = graphql`
-//   query($path: String!) {
-//     markdownRemark(fields: { slug: { eq: $path } }) {
-//       html
-//       frontmatter {
-//         title
-//         publishDate
-//         tagline
-//         image {
-//           childImageSharp {
-//             fluid(maxWidth: 500, quality: 90) {
-//               ...GatsbyImageSharpFluid
-//             }
-//           }
-//         }
-//         imageAttribution
-//       }
-//       description: excerpt(pruneLength: 130)
-//       fields {
-//         slug
-//       }
-//     }
-//   }
-// `;
+export const pageQuery = graphql`
+  query($path: String!) {
+    allSitePage(filter: {path: {}, context: {parentPath: {eq: $path}}}) {
+      edges {
+        node {
+          id
+          path
+          context {
+            name
+            pagePath
+            productName
+            productImageAlt
+          }
+          productImage {
+            childImageSharp {
+              fixed(width: 100) {
+                ...GatsbyImageSharpFixed
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;

@@ -1,6 +1,6 @@
 const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
-
+const { createRemoteFileNode } = require('gatsby-source-filesystem');
 const googleLanguageAPIService = require('./src/services/googleLanguageAPIService');
 
 const createMainStorefrontPage = async (createPage, node) => {
@@ -9,11 +9,10 @@ const createMainStorefrontPage = async (createPage, node) => {
   createPage({
     path: node.fields.slug,
     component: storefrontTemplate,
-    // In your blog post template's graphql query, you can use pagePath
-    // as a GraphQL variable to query for data from the markdown file.
     context: {
       fakeDescription,
       pagePath: node.fields.slug,
+      name: node.frontmatter.name,
     },
   });
 };
@@ -23,37 +22,63 @@ const createProductPages = async (createPage, node) => {
   const textAnalysis = await googleLanguageAPIService.getTextAnalysis(node.excerpt);
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
   consumerGoods.forEach((entity, index) => {
-    console.log('certainly trying', entity);
     createPage({
       path: `${node.fields.slug}${index}`,
       component: productTemplate,
-      // In your blog post template's graphql query, you can use pagePath
-      // as a GraphQL variable to query for data from the markdown file.
       context: {
-        pagePath: `${node.fields.slug}/${index}`,
+        pagePath: `${node.fields.slug}${index}`,
+        parentPath: node.fields.slug,
         productName: entity.name,
+        productImageUrl: 'https://images.unsplash.com/photo-1603038124597-2c5c207edf47',
+        productImageAlt: `A picture from unsplash of${entity.name}`,
       },
     });
   });
 };
 
-exports.onCreateNode = ({ node, getNode, actions }) => {
-  const { createNodeField } = actions;
+// exports.createSchemaCustomization = ({ actions }) => {
+//   const { createTypes } = actions;
+//   createTypes(`
+//     type SitePage implements Node {
+//       productImage: File @link(from: "productImage___NODE")
+//     }
+//   `);
+// };
+
+exports.onCreateNode = async ({
+  node, getNode, actions, store, cache, createNodeId,
+}) => {
+  const { createNodeField, createNode } = actions;
   if (node.internal.type === 'MarkdownRemark') {
     const basePath = `${node.frontmatter.name}/`;
     const slug = createFilePath({ node, getNode, basePath });
-    console.log('YOOOOOOOOOOOOOOOOOO', slug);
     createNodeField({
       node,
       name: 'slug',
       value: slug,
     });
   }
+  // For all pages that have an image url, call createRemoteFileNode
+  if (node.internal.type === 'SitePage' && node.context && node.context.productImageUrl) {
+    console.log(node.context.productImageUrl);
+    const fileNode = await createRemoteFileNode({
+      url: node.context.productImageUrl, // string that points to the URL of the image
+      parentNodeId: node.id, // id of the parent node of the fileNode you are going to create
+      createNode, // helper function in gatsby-node to generate the node
+      createNodeId, // helper function in gatsby-node to generate the node id
+      cache, // Gatsby's cache
+      store, // Gatsby's Redux store
+    });
+      // if the file was created, attach the new node to the parent node
+    console.log('trying', fileNode.id);
+    if (fileNode) {
+      node.productImage___NODE = fileNode.id;
+    }
+  }
 };
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
-  // Query for markdown nodes to use in creating pages.
   const result = await graphql(
     `
       {
@@ -72,7 +97,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       }
     `,
   );
-  // Handle errors
   if (result.errors) {
     reporter.panicOnBuild('Error while running GraphQL query.');
     return Promise.reject();
@@ -84,5 +108,4 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     return Promise.resolve();
   });
   return Promise.all(pageCreationPromises);
-  // return Promise.resolve();
 };

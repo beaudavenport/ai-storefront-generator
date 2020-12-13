@@ -14,6 +14,7 @@ module.exports = {
         implementation: sass,
       },
     },
+    'gatsby-plugin-fontawesome-css',
     'gatsby-plugin-image',
     'gatsby-plugin-react-helmet',
     'gatsby-plugin-offline',

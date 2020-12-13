@@ -1,31 +1,35 @@
 import { graphql } from 'gatsby';
+import Img from 'gatsby-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 // import Img from 'gatsby-image';
 import Layout from '../components/layout';
-// import blogPostStyles from './blogPost.module.css';
 // import SEO from '../components/seo';
 
 export default function ProductTemplate({ data, pageContext }) {
-  // const { markdownRemark } = data;
-  // const { frontmatter, html } = markdownRemark;
-  // const {
-  //   title, publishDate, tagline, image, imageAttribution,
-  // } = frontmatter;
-  console.log(pageContext);
+  const { parentPage, sitePage } = data;
+  console.log(sitePage);
   return (
-    <Layout>
+    <Layout title={parentPage.context.name} navHomePath={parentPage.context.pagePath}>
       {/* <SEO title={title} /> */}
-      <div>
-        <div>
-          {/* <Img
-            fluid={image.childImageSharp.fluid}
-            style={{
-              maxHeight: 500, width: '100%', objectFit: 'cover', objectPosition: '50%',
-            }}
-          /> */}
-          <p>A Cool Product:</p>
-          {pageContext.productName}
+      <div className="section">
+        <div className="card">
+          <div className="card-image">
+            <figure className="image">
+              <Img
+                fixed={sitePage.productImage.childImageSharp.fixed}
+                alt={sitePage.context.productImageAlt}
+              />
+            </figure>
+          </div>
+          <div className="card-content">
+            <p className="title is-4">{pageContext.productName}</p>
+            <p className="subtitle is-6">$99.99</p>
+            <div className="content">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Phasellus nec iaculis mauris.
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
@@ -35,27 +39,27 @@ ProductTemplate.propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
-// export const pageQuery = graphql`
-//   query($path: String!) {
-//     markdownRemark(fields: { slug: { eq: $path } }) {
-//       html
-//       frontmatter {
-//         title
-//         publishDate
-//         tagline
-//         image {
-//           childImageSharp {
-//             fluid(maxWidth: 500, quality: 90) {
-//               ...GatsbyImageSharpFluid
-//             }
-//           }
-//         }
-//         imageAttribution
-//       }
-//       description: excerpt(pruneLength: 130)
-//       fields {
-//         slug
-//       }
-//     }
-//   }
-// `;
+export const pageQuery = graphql`
+  query($parentPath: String!, $path: String!) {
+    parentPage: sitePage(context: {pagePath: {eq: $parentPath}}) {
+      id
+      context {
+        name
+        pagePath
+      }
+    }
+    sitePage(context: {pagePath: {eq: $path}}) {
+      id
+      context {
+        productImageAlt
+      }
+      productImage {
+        childImageSharp {
+          fixed(width: 300) {
+            ...GatsbyImageSharpFixed
+          }
+        }
+      }
+    }
+  }
+`;
