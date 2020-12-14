@@ -13,7 +13,7 @@ const mockTextAnalysisResponse = {
       metadata: {},
       name: 'boots',
       salience: 0.27603653,
-      type: 'OTHER',
+      type: 'CONSUMER_GOOD',
     },
     {
       mentions: [

@@ -15,26 +15,32 @@ export default function StorefrontTemplate({ data, pageContext }) {
         <div>
           {pageContext.fakeDescription}
         </div>
-        {allSitePage.edges.map((edge) => (
-          <div className="box">
-            <article className="media">
-              <div className="media-left">
-                <figure className="image">
-                  <Img
-                    fixed={edge.node.productImage.childImageSharp.fixed}
-                    alt={edge.node.context.productImageAlt}
-                  />
-                </figure>
+        <div className="columns">
+
+          {allSitePage.edges.map((edge) => (
+            <div className="column">
+
+              <div className="box">
+                <article className="media">
+                  <div className="media-left">
+                    <figure className="image">
+                      <Img
+                        fixed={edge.node.productImage.childImageSharp.fixed}
+                        alt={edge.node.context.productImageAlt}
+                      />
+                    </figure>
+                  </div>
+                  <div className="media-right">
+                    <div className="content">
+                      <p><strong>{edge.node.context.productName}</strong></p>
+                      <Link to={edge.node.context.pagePath} className="button is-link">View</Link>
+                    </div>
+                  </div>
+                </article>
               </div>
-              <div className="media-right">
-                <div className="content">
-                  <p><strong>{edge.node.context.productName}</strong></p>
-                  <Link to={edge.node.context.pagePath} className="button is-link">View</Link>
-                </div>
-              </div>
-            </article>
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </Layout>
   );
@@ -45,7 +51,8 @@ StorefrontTemplate.propTypes = {
 
 export const pageQuery = graphql`
   query($path: String!) {
-    allSitePage(filter: {path: {}, context: {parentPath: {eq: $path}}}) {
+    
+    allSitePage(filter: {path: {}, context: {parentPath: {eq: $path}, type: {eq: "Product"}}}) {
       edges {
         node {
           id

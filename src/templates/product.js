@@ -8,7 +8,6 @@ import Layout from '../components/layout';
 
 export default function ProductTemplate({ data, pageContext }) {
   const { parentPage, sitePage } = data;
-  console.log(sitePage);
   return (
     <Layout title={parentPage.context.name} navHomePath={parentPage.context.pagePath}>
       {/* <SEO title={title} /> */}
@@ -48,7 +47,7 @@ export const pageQuery = graphql`
         pagePath
       }
     }
-    sitePage(context: {pagePath: {eq: $path}}) {
+    sitePage(context: {pagePath: {eq: $path}, type: {eq: "Product"}}) {
       id
       context {
         productImageAlt

@@ -26,6 +26,7 @@ const createProductPages = async (createPage, node) => {
       path: `${node.fields.slug}${index}`,
       component: productTemplate,
       context: {
+        type: 'Product',
         pagePath: `${node.fields.slug}${index}`,
         parentPath: node.fields.slug,
         productName: entity.name,
@@ -36,14 +37,20 @@ const createProductPages = async (createPage, node) => {
   });
 };
 
-// exports.createSchemaCustomization = ({ actions }) => {
-//   const { createTypes } = actions;
-//   createTypes(`
-//     type SitePage implements Node {
-//       productImage: File @link(from: "productImage___NODE")
-//     }
-//   `);
-// };
+const createAboutUsPage = async (createPage, node) => {
+  const aboutUsTemplate = path.resolve('src/templates/aboutUs.js');
+  const fakeDescription = await Promise.resolve('This storefront has been a dream of mine for years! Thank you for shopping.');
+  createPage({
+    path: `${node.fields.slug}about-us`,
+    component: aboutUsTemplate,
+    context: {
+      fakeDescription,
+      pagePath: `${node.fields.slug}about-us`,
+      parentPath: node.fields.slug,
+      name: node.frontmatter.name,
+    },
+  });
+};
 
 exports.onCreateNode = async ({
   node, getNode, actions, store, cache, createNodeId,
@@ -60,7 +67,6 @@ exports.onCreateNode = async ({
   }
   // For all pages that have an image url, call createRemoteFileNode
   if (node.internal.type === 'SitePage' && node.context && node.context.productImageUrl) {
-    console.log(node.context.productImageUrl);
     const fileNode = await createRemoteFileNode({
       url: node.context.productImageUrl, // string that points to the URL of the image
       parentNodeId: node.id, // id of the parent node of the fileNode you are going to create
@@ -70,7 +76,6 @@ exports.onCreateNode = async ({
       store, // Gatsby's Redux store
     });
       // if the file was created, attach the new node to the parent node
-    console.log('trying', fileNode.id);
     if (fileNode) {
       node.productImage___NODE = fileNode.id;
     }
@@ -105,6 +110,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const pageCreationPromises = result.data.allMarkdownRemark.edges.map(async ({ node }) => {
     await createMainStorefrontPage(createPage, node);
     await createProductPages(createPage, node);
+    await createAboutUsPage(createPage, node);
     return Promise.resolve();
   });
   return Promise.all(pageCreationPromises);
