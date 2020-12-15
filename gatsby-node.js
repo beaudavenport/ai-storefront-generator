@@ -1,6 +1,8 @@
 const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
+
+const deepAIAPIService = require('./src/services/deepAIAPIService');
 const googleLanguageAPIService = require('./src/services/googleLanguageAPIService');
 
 const createMainStorefrontPage = async (createPage, node) => {
@@ -21,8 +23,9 @@ const createProductPages = async (createPage, node) => {
   const productTemplate = path.resolve('src/templates/product.js');
   const textAnalysis = await googleLanguageAPIService.getTextAnalysis(node.excerpt);
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
-  consumerGoods.forEach((entity, index) => {
-    createPage({
+  return Promise.all(consumerGoods.map(async (entity, index) => {
+    const review = await deepAIAPIService.createProductReview(entity.name);
+    const createPageResult = createPage({
       path: `${node.fields.slug}${index}`,
       component: productTemplate,
       context: {
@@ -32,9 +35,12 @@ const createProductPages = async (createPage, node) => {
         productName: entity.name,
         productImageUrl: 'https://images.unsplash.com/photo-1603038124597-2c5c207edf47',
         productImageAlt: `A picture from unsplash of${entity.name}`,
+        reviews: [review],
       },
     });
-  });
+    console.log(createPageResult);
+    Promise.resolve();
+  }));
 };
 
 const createAboutUsPage = async (createPage, node) => {

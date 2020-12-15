@@ -18,7 +18,7 @@ export default function StorefrontTemplate({ data, pageContext }) {
         <div className="columns">
 
           {allSitePage.edges.map((edge) => (
-            <div className="column">
+            <div className="column is-3">
 
               <div className="box">
                 <article className="media">

@@ -24,9 +24,19 @@ export default function ProductTemplate({ data, pageContext }) {
           <div className="card-content">
             <p className="title is-4">{pageContext.productName}</p>
             <p className="subtitle is-6">$99.99</p>
-            <div className="content">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Phasellus nec iaculis mauris.
+            <div className="container">
+              <h4 className="title is-4">Reviews</h4>
+              {pageContext.reviews.map((review) => {
+                const paragraphs = review.split(`A positive review of ${pageContext.productName}`)[1].split('\n');
+                return (
+                  <div className="container">
+                    <p className="title is-5">{paragraphs[0]}</p>
+                    <p>{paragraphs[2]}</p>
+                    <p>{paragraphs[4]}</p>
+                    <p>{paragraphs[6]}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
