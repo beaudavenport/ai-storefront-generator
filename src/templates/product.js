@@ -27,10 +27,16 @@ export default function ProductTemplate({ data, pageContext }) {
             <div className="container">
               <h4 className="title is-4">Reviews</h4>
               {pageContext.reviews.map((review) => {
-                const paragraphs = review.split(`A positive review of ${pageContext.productName}`)[1].split('\n');
+                const paragraphs = review.review.split('A positive review of')[1].split('\n');
                 return (
                   <div className="container">
+                    {new Array(review.stars).fill().map(() => (
+                      <span className="icon is-small">
+                        <i className="fas fa-star" />
+                      </span>
+                    ))}
                     <p className="title is-5">{paragraphs[0]}</p>
+                    <p className="subtitle">{review.reviewer}</p>
                     <p>{paragraphs[2]}</p>
                     <p>{paragraphs[4]}</p>
                     <p>{paragraphs[6]}</p>

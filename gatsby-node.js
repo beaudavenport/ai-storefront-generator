@@ -24,8 +24,8 @@ const createProductPages = async (createPage, node) => {
   const textAnalysis = await googleLanguageAPIService.getTextAnalysis(node.excerpt);
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
   return Promise.all(consumerGoods.map(async (entity, index) => {
-    const review = await deepAIAPIService.createProductReview(entity.name);
-    const createPageResult = createPage({
+    const review = await deepAIAPIService.createProductReview(entity.name, entity.sentiment.score);
+    createPage({
       path: `${node.fields.slug}${index}`,
       component: productTemplate,
       context: {
@@ -34,11 +34,10 @@ const createProductPages = async (createPage, node) => {
         parentPath: node.fields.slug,
         productName: entity.name,
         productImageUrl: 'https://images.unsplash.com/photo-1603038124597-2c5c207edf47',
-        productImageAlt: `A picture from unsplash of${entity.name}`,
+        productImageAlt: `A picture from unsplash of ${entity.name}`,
         reviews: [review],
       },
     });
-    console.log(createPageResult);
     Promise.resolve();
   }));
 };

@@ -1,4 +1,5 @@
 const deepai = require('deepai');
+const randomName = require('random-name');
 
 const fakeJeansReviewResponse = {
   output: 'A positive review of jeans found that they "fit fine, quality of shoes did not last over a year and wore well. On the whole, shoes are noticeably heavier and much more expensive than a khaki."\n'
@@ -100,7 +101,7 @@ const fakeBootsReviewResponse = {
   id: '38745339-0eee-48f4-b3c2-af86ae27e006',
 };
 
-const createProductReview = async (productName) => {
+const createProductReview = async (productName, productSentimentScore) => {
   // deepai.setApiKey(TODO: ENV VAR);
   // const resp = await deepai.callStandardApi('text2img', {
   //   text: `A positive review of ${productName}`,
@@ -109,7 +110,12 @@ const createProductReview = async (productName) => {
   //   text: `A positive review of ${productName}`,
   // });
   const reviewToProvide = productName === 'jeans' ? fakeJeansReviewResponse : fakeBootsReviewResponse;
-  return Promise.resolve(reviewToProvide.output);
+  const reviewWithScore = {
+    stars: productSentimentScore > 0.2 ? 5 : 3,
+    review: reviewToProvide.output,
+    reviewer: randomName(),
+  };
+  return Promise.resolve(reviewWithScore);
 };
 
 module.exports = {
