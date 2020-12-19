@@ -1,5 +1,5 @@
 ---
-name: hello-world
+name: Hello World Emporium
 author: Beau Davenport
 github: beaudavenport
 ---

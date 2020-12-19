@@ -62,7 +62,7 @@ exports.onCreateNode = async ({
 }) => {
   const { createNodeField, createNode } = actions;
   if (node.internal.type === 'MarkdownRemark') {
-    const basePath = `${node.frontmatter.name}/`;
+    const basePath = 'src/prompts';
     const slug = createFilePath({ node, getNode, basePath });
     createNodeField({
       node,

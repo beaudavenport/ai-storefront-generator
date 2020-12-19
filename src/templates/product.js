@@ -12,39 +12,66 @@ export default function ProductTemplate({ data, pageContext }) {
     <Layout title={parentPage.context.name} navHomePath={parentPage.context.pagePath}>
       {/* <SEO title={title} /> */}
       <div className="section">
-        <div className="card">
-          <div className="card-image">
+        <div className="columns">
+          <div className="column is-one-third-desktop">
             <figure className="image">
               <Img
-                fixed={sitePage.productImage.childImageSharp.fixed}
+                fluid={sitePage.productImage.childImageSharp.fluid}
                 alt={sitePage.context.productImageAlt}
               />
             </figure>
           </div>
-          <div className="card-content">
-            <p className="title is-4">{pageContext.productName}</p>
-            <p className="subtitle is-6">$99.99</p>
-            <div className="container">
-              <h4 className="title is-4">Reviews</h4>
-              {pageContext.reviews.map((review) => {
-                const paragraphs = review.review.split('A positive review of')[1].split('\n');
-                return (
-                  <div className="container">
+          <div className="column is-flex is-align-items-center is-justify-content-center">
+            <div>
+              <p className="title">{pageContext.productName}</p>
+              <p className="subtitle">$99.99</p>
+              <p>Nothing better than a great description of a good product.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div className="section">
+        <div className="container">
+          <h4 className="subtitle is-4">
+            Reviews for
+            {' '}
+            <strong>
+              {pageContext.productName}
+            </strong>
+          </h4>
+
+          {pageContext.reviews.map((review) => {
+            const paragraphs = review.review.split('A positive review of')[1].split('\n');
+            return (
+              <div className="media">
+                <figure className="media-left">
+                  <p>
+                    <i className="fa fa-user" aria-hidden="true" />
+                    <small>
+                      {' '}
+                      {review.reviewer}
+                    </small>
+                  </p>
+                </figure>
+                <div className="media-content">
+                  <div className="content">
                     {new Array(review.stars).fill().map(() => (
                       <span className="icon is-small">
                         <i className="fas fa-star" />
                       </span>
                     ))}
-                    <p className="title is-5">{paragraphs[0]}</p>
-                    <p className="subtitle">{review.reviewer}</p>
+                    <p>
+                      <strong>{paragraphs[0]}</strong>
+                    </p>
                     <p>{paragraphs[2]}</p>
                     <p>{paragraphs[4]}</p>
                     <p>{paragraphs[6]}</p>
                   </div>
-                );
-              })}
-            </div>
-          </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </Layout>
@@ -70,8 +97,8 @@ export const pageQuery = graphql`
       }
       productImage {
         childImageSharp {
-          fixed(width: 300) {
-            ...GatsbyImageSharpFixed
+          fluid {
+            ...GatsbyImageSharpFluid
           }
         }
       }

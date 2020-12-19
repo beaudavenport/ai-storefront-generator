@@ -24,7 +24,7 @@ const IndexPage = ({ data }) => {
               Part of the
               <a href="https://www.gatsbyjs.com/silly-site-challenge/">
                 {' '}
-                Gatsby Silly Site Challenge
+                <strong>Gatsby Silly Site Challenge</strong>
               </a>
             </h2>
           </div>

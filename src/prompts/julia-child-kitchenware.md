@@ -1,5 +1,5 @@
 ---
-name: julia-child
+name: Julia Child's Kitchenware
 author: Beau Davenport
 github: beaudavenport
 ---

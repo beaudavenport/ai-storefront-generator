@@ -7,8 +7,8 @@ const Layout = ({ title, navHomePath, children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   return (
     <div>
-      <div className="container">
-        <nav className="navbar" role="navigation" aria-label="main navigation">
+      <nav className="navbar is-light" role="navigation" aria-label="main navigation">
+        <div className="container">
           <div className="navbar-brand">
             <Link to={navHomePath} className="navbar-item">
               <strong>{title}</strong>
@@ -38,13 +38,15 @@ const Layout = ({ title, navHomePath, children }) => {
               <div className="navbar-item">
                 <div className="buttons">
                   <Link to="/" className="button is-link">
-                    Back
+                    Back to Entries
                   </Link>
                 </div>
               </div>
             </div>
           </div>
-        </nav>
+        </div>
+      </nav>
+      <div className="container">
         {children}
       </div>
       <Footer />

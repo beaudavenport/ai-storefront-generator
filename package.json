@@ -36,7 +36,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.1.0",
-    "sass": "^1.30.0"
+    "sass": "^1.30.0",
+    "slugify": "^1.4.6"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
