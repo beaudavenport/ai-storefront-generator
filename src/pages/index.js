@@ -3,9 +3,6 @@ import { graphql, Link } from 'gatsby';
 import { PropTypes } from 'prop-types';
 // import Img from 'gatsby-image';
 // import SEO from '../components/seo';
-// import containerStyles from '../components/container.module.css';
-// import blogPageStyles from './blogPage.module.css';
-// import pageStyles from './page.module.css';
 import './customstyles.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Footer from '../components/footer';
@@ -20,27 +17,30 @@ const IndexPage = ({ data }) => {
             <h1 className="title">
               AI Storefront Generator
             </h1>
-            <h2>
-              Part of the
+            <p>
+              A silly assortment of e-commerce storefronts created with the power of machine learning!
+            </p>
+            <p>
+              Built for the
               <a href="https://www.gatsbyjs.com/silly-site-challenge/">
                 {' '}
-                <strong>Gatsby Silly Site Challenge</strong>
+                <strong>Gatsby Silly Site Challenge 2020</strong>
               </a>
-            </h2>
+            </p>
           </div>
         </div>
       </section>
       <section className="section">
         <div className="container">
-          <h3 className="title">Entries</h3>
-          <p className="subtitle">
+          <h3 className="title is-5">Entries</h3>
+          <p className="subtitle is-6">
             All of the below entries have been converted into storefronts.
             Click on &quot;View Storefront&quot; to see!
           </p>
           {entries.map((node) => (
             <div className="box">
               <div className="content">
-                <h4 className="title">{node.frontmatter.name}</h4>
+                <h4 className="title is-4">{node.frontmatter.name}</h4>
                 <p>
                   Added by:
                   {' '}

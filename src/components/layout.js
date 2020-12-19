@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
 import Footer from './footer';
 
-const Layout = ({ title, navHomePath, children }) => {
+const Layout = ({ title, navHomePath, render }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAnnotationsToggled, setIsAnnotationsToggled] = useState(false);
   return (
     <div>
       <nav className="navbar is-light" role="navigation" aria-label="main navigation">
@@ -37,6 +38,15 @@ const Layout = ({ title, navHomePath, children }) => {
             <div className="navbar-end">
               <div className="navbar-item">
                 <div className="buttons">
+                  {!isAnnotationsToggled ? (
+                    <button type="button" className="button is-warning" onClick={() => setIsAnnotationsToggled(true)}>
+                      Show Annotations
+                    </button>
+                  ) : (
+                    <button type="button" className="button is-warning is-inverted" onClick={() => setIsAnnotationsToggled(false)}>
+                      Hide Annotations
+                    </button>
+                  )}
                   <Link to="/" className="button is-link">
                     Back to Entries
                   </Link>
@@ -47,7 +57,7 @@ const Layout = ({ title, navHomePath, children }) => {
         </div>
       </nav>
       <div className="container">
-        {children}
+        {render({ isAnnotationsToggled })}
       </div>
       <Footer />
     </div>

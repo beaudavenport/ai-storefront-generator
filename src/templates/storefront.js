@@ -8,40 +8,46 @@ import Layout from '../components/layout';
 export default function StorefrontTemplate({ data, pageContext }) {
   const { allSitePage } = data;
   return (
-    <Layout title={pageContext.name} navHomePath={pageContext.pagePath}>
-      {/* <SEO title={title} /> */}
-      <div className="section">
-        <div>
-          {pageContext.fakeDescription}
-        </div>
-      </div>
-      <div className="section">
-        <div className="columns">
-          {allSitePage.edges.map((edge) => (
-            <div className="column is-one-quarter">
-              <div className="content">
-                <figure className="image">
-                  <Img
-                    fixed={edge.node.productImage.childImageSharp.fixed}
-                    alt={edge.node.context.productImageAlt}
-                  />
-                </figure>
-              </div>
-              <div className="content is-flex is-justify-content-center">
-                <div>
-                  <p>
-                    <strong>{edge.node.context.productName}</strong>
-                    <br />
-                    <small>$99.99</small>
-                  </p>
-                  <Link to={edge.node.context.pagePath} className="button is-link">View</Link>
-                </div>
-              </div>
+    <Layout
+      title={pageContext.name}
+      navHomePath={pageContext.pagePath}
+      render={({ isAnnotationsToggled }) => (
+        <>
+          {/* <SEO title={title} /> */}
+          <div className="section">
+            <div>
+              {pageContext.fakeDescription}
             </div>
-          ))}
-        </div>
-      </div>
-    </Layout>
+          </div>
+          <div className="section">
+            <div className="columns">
+              {allSitePage.edges.map((edge) => (
+                <div className="column is-one-quarter">
+                  <div className="content">
+                    <figure className="image">
+                      <Img
+                        fixed={edge.node.productImage.childImageSharp.fixed}
+                        alt={edge.node.context.productImageAlt}
+                      />
+                    </figure>
+                  </div>
+                  <div className="content is-flex is-justify-content-center">
+                    <div>
+                      <p>
+                        <strong>{edge.node.context.productName}</strong>
+                        <br />
+                        <small>$99.99</small>
+                      </p>
+                      <Link to={edge.node.context.pagePath} className="button is-primary">View</Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+    />
   );
 }
 StorefrontTemplate.propTypes = {

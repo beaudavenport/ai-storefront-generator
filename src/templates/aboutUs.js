@@ -7,12 +7,18 @@ import Layout from '../components/layout';
 
 export default function AboutUsTemplate({ pageContext }) {
   return (
-    <Layout title={pageContext.name} navHomePath={pageContext.parentPath}>
-      {/* <SEO title={title} /> */}
-      <div className="section">
-        {pageContext.fakeDescription}
-      </div>
-    </Layout>
+    <Layout
+      title={pageContext.name}
+      navHomePath={pageContext.parentPath}
+      render={({ isAnnotationsToggled }) => (
+        <>
+          {/* <SEO title={title} /> */}
+          <div className="section">
+            {pageContext.fakeDescription}
+          </div>
+        </>
+      )}
+    />
   );
 }
 AboutUsTemplate.propTypes = {
