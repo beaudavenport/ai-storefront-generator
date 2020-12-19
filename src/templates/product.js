@@ -2,6 +2,7 @@ import { graphql } from 'gatsby';
 import Img from 'gatsby-image';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Annotation from '../components/annotation';
 // import Img from 'gatsby-image';
 import Layout from '../components/layout';
 // import SEO from '../components/seo';
@@ -18,11 +19,18 @@ export default function ProductTemplate({ data, pageContext }) {
             <div className="columns">
               <div className="column is-one-third-desktop">
                 <figure className="image">
+                  <div className="is-flex is-justify-content-center">
+                    <Annotation placement="top" isActive={isAnnotationsToggled}>
+                      <strong>
+                        Product images are provided through the Unsplash API,
+                        the first result for the given "search term" of the product name.
+                      </strong>
+                    </Annotation>
+                  </div>
                   <Img
                     fluid={sitePage.productImage.childImageSharp.fluid}
                     alt={sitePage.context.productImageAlt}
                   />
-                  {isAnnotationsToggled && <div className="notification is-warning">Product images are provided through the Unsplash API, the first result for the given "search term" of the product name.</div>}
                 </figure>
               </div>
               <div className="column is-flex is-align-items-center is-justify-content-center">
@@ -30,6 +38,13 @@ export default function ProductTemplate({ data, pageContext }) {
                   <p className="title">{pageContext.productName}</p>
                   <p className="subtitle">$99.99</p>
                   <p>Nothing better than a great description of a good product.</p>
+                  <div className="is-flex is-justify-content-center">
+                    <Annotation placement="bottom" isActive={isAnnotationsToggled}>
+                      <strong>
+                        {`Descriptions are generated with Deep AI, with given prompt: "A description for ${pageContext.productName}"`}
+                      </strong>
+                    </Annotation>
+                  </div>
                 </div>
               </div>
             </div>
@@ -48,27 +63,48 @@ export default function ProductTemplate({ data, pageContext }) {
               {pageContext.reviews.map((review) => {
                 const paragraphs = review.review.split('A positive review of')[1].split('\n');
                 return (
-                  <div className="media">
-                    <figure className="media-left">
+                  <div className="columns">
+                    <div className="column is-2-desktop">
                       <p>
+                        <div className="is-flex is-justify-content-center">
+                          <Annotation placement="top" isActive={isAnnotationsToggled}>
+                            <strong>
+                              A random name
+                            </strong>
+                          </Annotation>
+                        </div>
                         <i className="fa fa-user" aria-hidden="true" />
                         <small>
                           {' '}
                           {review.reviewer}
                         </small>
                       </p>
-                    </figure>
-                    <div className="media-content">
-                      <div className="content">
+                    </div>
+                    <div className="column">
+                      <div className="">
                         {new Array(review.stars).fill().map(() => (
                           <span className="icon is-small">
                             <i className="fas fa-star" />
                           </span>
                         ))}
+                        <div className="column is-1-desktop is-flex is-justify-content-center">
+                          <Annotation placement="bottom" isActive={isAnnotationsToggled}>
+                            <strong>
+                              Rating based on Google&apos;s Sentiment Analysis score within text prompt (1 star for negative, 3 stars for neutral, 5 stars for positive)
+                            </strong>
+                          </Annotation>
+                        </div>
                         <p>
                           <strong>{paragraphs[0]}</strong>
                         </p>
                         <p>{paragraphs[2]}</p>
+                        <div className="is-flex is-justify-content-center">
+                          <Annotation placement="bottom" isActive={isAnnotationsToggled}>
+                            <strong>
+                              {`Review title and content are generated with Deep AI, with given prompt (using "sentiment"): "A (positive/negative/neutral review for ${pageContext.productName}"`}
+                            </strong>
+                          </Annotation>
+                        </div>
                         <p>{paragraphs[4]}</p>
                         <p>{paragraphs[6]}</p>
                       </div>

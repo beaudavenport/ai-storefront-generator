@@ -2,5 +2,7 @@
 
 // $footer-background-color: hsl(0, 0%, 4%);
 // $footer-color: hsl(0, 0%, 100%);
+$popover-background-color: #ffdd57;
 
 @import "~bulma/bulma.sass";
+@import "~bulma-popover/bulma-popover.scss"

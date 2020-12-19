@@ -8,7 +8,7 @@ const Layout = ({ title, navHomePath, render }) => {
   const [isAnnotationsToggled, setIsAnnotationsToggled] = useState(false);
   return (
     <div>
-      <nav className="navbar is-light" role="navigation" aria-label="main navigation">
+      <nav className="navbar is-light is-fixed-top" role="navigation" aria-label="main navigation">
         <div className="container">
           <div className="navbar-brand">
             <Link to={navHomePath} className="navbar-item">
@@ -56,7 +56,7 @@ const Layout = ({ title, navHomePath, render }) => {
           </div>
         </div>
       </nav>
-      <div className="container">
+      <div className="container pt-5">
         {render({ isAnnotationsToggled })}
       </div>
       <Footer />
