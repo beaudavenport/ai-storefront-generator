@@ -56,7 +56,7 @@ const Layout = ({ title, navHomePath, render }) => {
           </div>
         </div>
       </nav>
-      <div className="container pt-5">
+      <div className="container pt-6">
         {render({ isAnnotationsToggled })}
       </div>
       <Footer />
