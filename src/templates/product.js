@@ -28,8 +28,8 @@ export default function ProductTemplate({ data, pageContext }) {
                     </Annotation>
                   </div>
                   <Img
-                    fluid={sitePage.productImage.childImageSharp.fluid}
-                    alt={sitePage.context.productImageAlt}
+                    fluid={sitePage.image.childImageSharp.fluid}
+                    alt={sitePage.context.imageAlt}
                   />
                 </figure>
               </div>
@@ -135,9 +135,9 @@ export const pageQuery = graphql`
     sitePage(context: {pagePath: {eq: $path}, type: {eq: "Product"}}) {
       id
       context {
-        productImageAlt
+        imageAlt
       }
-      productImage {
+      image {
         childImageSharp {
           fluid {
             ...GatsbyImageSharpFluid

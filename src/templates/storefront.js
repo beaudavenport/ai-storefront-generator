@@ -20,7 +20,7 @@ export default function StorefrontTemplate({ data, pageContext }) {
               Unique products, made-to-order
             </p>
             <p className="subtitle">
-              {pageContext.fakeDescription}
+              Browse our selection of offerings below!
             </p>
           </div>
           <div className="section">
@@ -39,8 +39,8 @@ export default function StorefrontTemplate({ data, pageContext }) {
                       </div>
                       <div className="image is-128X128">
                         <Img
-                          fixed={edge.node.productImage.childImageSharp.fixed}
-                          alt={edge.node.context.productImageAlt}
+                          fixed={edge.node.image.childImageSharp.fixed}
+                          alt={edge.node.context.imageAlt}
                         />
                       </div>
                     </figure>
@@ -89,9 +89,9 @@ export const pageQuery = graphql`
             name
             pagePath
             productName
-            productImageAlt
+            imageAlt
           }
-          productImage {
+          image {
             childImageSharp {
               fixed(width: 100) {
                 ...GatsbyImageSharpFixed

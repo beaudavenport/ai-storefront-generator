@@ -1,6 +1,22 @@
 const deepai = require('deepai');
 const randomName = require('random-name');
 
+const fakeAboutUsResponse = {
+  output: 'The story of Julia Child\'s Kitchenware begins in restaurant-supply house. The kitchen is located on three different levels of a hallway. It\'s a large and cozy room. It\'s very cozy and very good.' + '\n'
+
+  + 'On the floor a little walk away this large room has a great view of the hotel. When people talk about this space, they can imagine that it\'s not a cozy space. It\'s an open seating area.' + '\n'
+
+  + 'On the outside there is an air-conditioned room, with a large window on each side. The room is a lot of storage, which should be a great place to be able to check a bunch of different things out. I would recommend putting the kitchen in this space.' + '\n'
+
+  + 'My Kitchenware is at a place where it\'s situated in this kitchen. The only thing I would suggest at this location is it has a great view of the kitchen. This room has a full room with an outdoor fountain and a dining area (which is a little larger than a fireplace).' + '\n'
+
+  + 'The best example of this space is a tiny front room. It\'s small, it\'s quiet, and it\'s very clean. You can even sit in the side of the room.' + '\n'
+
+  + 'A great example is the "bar area" area, where the food is served by the bar, which is open from the inside. It\'s a great place to eat at the restaurant.' + '\n'
+
+  + 'On the one hand, the front room of this kitchen is excellent. It\'s a great seating area that\'s quite different from the front (which is closed). On the other hand, it\'s a quiet space that is very different from the front. It\'s not where an ordinary room would be, it\'s an air-conditioned room.<|endoftext|>The United States Senate approved a law Sunday that forces the Trump administration to move forward with its war plan.',
+};
+
 const fakeJeansReviewResponse = {
   output: 'A positive review of jeans found that they "fit fine, quality of shoes did not last over a year and wore well. On the whole, shoes are noticeably heavier and much more expensive than a khaki."\n'
     + '\n'
@@ -118,6 +134,17 @@ const createProductReview = async (productName, productSentimentScore) => {
   return Promise.resolve(reviewWithScore);
 };
 
+const createAboutUs = async (storeName, locations) => {
+  const prompt = `The story of ${storeName} begins in ${locations.length ? `${locations[0]}.` : ' a commitment to quality.'}`;
+  const aboutUs = {
+    title: prompt,
+    text: fakeAboutUsResponse.output.split(prompt)[1],
+    imageUrl: 'https://image.shutterstock.com/image-vector/ui-image-placeholder-wireframes-apps-260nw-1037719204.jpg',
+  };
+  return Promise.resolve(aboutUs);
+};
+
 module.exports = {
   createProductReview,
+  createAboutUs,
 };

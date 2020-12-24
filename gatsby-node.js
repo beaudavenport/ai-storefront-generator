@@ -19,9 +19,8 @@ const createMainStorefrontPage = async (createPage, node) => {
   });
 };
 
-const createProductPages = async (createPage, node) => {
+const createProductPages = async (createPage, node, textAnalysis) => {
   const productTemplate = path.resolve('src/templates/product.js');
-  const textAnalysis = await googleLanguageAPIService.getTextAnalysis(node.excerpt);
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
   return Promise.all(consumerGoods.map(async (entity, index) => {
     const review = await deepAIAPIService.createProductReview(entity.name, entity.sentiment.score);
@@ -33,8 +32,8 @@ const createProductPages = async (createPage, node) => {
         pagePath: `${node.fields.slug}${index}`,
         parentPath: node.fields.slug,
         productName: entity.name,
-        productImageUrl: 'https://images.unsplash.com/photo-1603038124597-2c5c207edf47',
-        productImageAlt: `A picture from unsplash of ${entity.name}`,
+        imageUrl: 'https://images.unsplash.com/photo-1603038124597-2c5c207edf47',
+        imageAlt: `A picture from unsplash of ${entity.name}`,
         reviews: [review],
       },
     });
@@ -42,14 +41,17 @@ const createProductPages = async (createPage, node) => {
   }));
 };
 
-const createAboutUsPage = async (createPage, node) => {
+const createAboutUsPage = async (createPage, node, textAnalysis) => {
   const aboutUsTemplate = path.resolve('src/templates/aboutUs.js');
-  const fakeDescription = await Promise.resolve('This storefront has been a dream of mine for years! Thank you for shopping.');
+  const locations = textAnalysis.filter((entity) => entity.type === 'LOCATION').map((entity) => entity.name);
+  const aboutUs = await deepAIAPIService.createAboutUs(node.frontmatter.name, locations);
   createPage({
     path: `${node.fields.slug}about-us`,
     component: aboutUsTemplate,
     context: {
-      fakeDescription,
+      title: aboutUs.title,
+      text: aboutUs.text,
+      imageUrl: aboutUs.imageUrl,
       pagePath: `${node.fields.slug}about-us`,
       parentPath: node.fields.slug,
       name: node.frontmatter.name,
@@ -71,9 +73,9 @@ exports.onCreateNode = async ({
     });
   }
   // For all pages that have an image url, call createRemoteFileNode
-  if (node.internal.type === 'SitePage' && node.context && node.context.productImageUrl) {
+  if (node.internal.type === 'SitePage' && node.context && node.context.imageUrl) {
     const fileNode = await createRemoteFileNode({
-      url: node.context.productImageUrl, // string that points to the URL of the image
+      url: node.context.imageUrl, // string that points to the URL of the image
       parentNodeId: node.id, // id of the parent node of the fileNode you are going to create
       createNode, // helper function in gatsby-node to generate the node
       createNodeId, // helper function in gatsby-node to generate the node id
@@ -82,7 +84,7 @@ exports.onCreateNode = async ({
     });
       // if the file was created, attach the new node to the parent node
     if (fileNode) {
-      node.productImage___NODE = fileNode.id;
+      node.image___NODE = fileNode.id;
     }
   }
 };
@@ -113,9 +115,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
   // Create storefront layout and product pages based on results of analysis for each prompt.
   const pageCreationPromises = result.data.allMarkdownRemark.edges.map(async ({ node }) => {
+    const textAnalysis = await googleLanguageAPIService.getTextAnalysis(node.excerpt);
     await createMainStorefrontPage(createPage, node);
-    await createProductPages(createPage, node);
-    await createAboutUsPage(createPage, node);
+    await createProductPages(createPage, node, textAnalysis);
+    await createAboutUsPage(createPage, node, textAnalysis);
     return Promise.resolve();
   });
   return Promise.all(pageCreationPromises);
