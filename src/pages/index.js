@@ -1,8 +1,6 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { PropTypes } from 'prop-types';
-import './customstyles.scss';
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import Footer from '../components/footer';
 import SEO from '../components/seo';
 
