@@ -1,9 +1,9 @@
-import { graphql, Link } from 'gatsby';
+import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Img from 'gatsby-image';
 import Layout from '../components/layout';
-// import SEO from '../components/seo';
+import SEO from '../components/seo';
 import Annotation from '../components/annotation';
 
 export default function AboutUsTemplate({ pageContext, data }) {
@@ -13,15 +13,13 @@ export default function AboutUsTemplate({ pageContext, data }) {
       navHomePath={pageContext.parentPath}
       render={({ isAnnotationsToggled }) => (
         <>
-          {/* <SEO title={title} /> */}
+          <SEO title={pageContext.name} description={pageContext.title} />
           <div className="section">
             <div className="columns">
               <div className="column">
                 <div className="section">
-
-                  <p className="title">{pageContext.title}</p>
+                  <h1 className="title">{pageContext.title}</h1>
                 </div>
-
               </div>
               <div className="column is-4-desktop">
                 <figure className="image">

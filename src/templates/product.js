@@ -3,9 +3,8 @@ import Img from 'gatsby-image';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Annotation from '../components/annotation';
-// import Img from 'gatsby-image';
 import Layout from '../components/layout';
-// import SEO from '../components/seo';
+import SEO from '../components/seo';
 
 export default function ProductTemplate({ data, pageContext }) {
   const { parentPage, sitePage } = data;
@@ -15,6 +14,7 @@ export default function ProductTemplate({ data, pageContext }) {
       navHomePath={parentPage.context.pagePath}
       render={({ isAnnotationsToggled }) => (
         <>
+          <SEO title={pageContext.productName} description="Unique products, made-to-order" />
           <div className="section">
             <div className="columns">
               <div className="column is-one-third-desktop">

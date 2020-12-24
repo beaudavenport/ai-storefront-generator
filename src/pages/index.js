@@ -1,16 +1,16 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { PropTypes } from 'prop-types';
-// import Img from 'gatsby-image';
-// import SEO from '../components/seo';
 import './customstyles.scss';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Footer from '../components/footer';
+import SEO from '../components/seo';
 
 const IndexPage = ({ data }) => {
   const entries = data.allMarkdownRemark.edges.map((edge) => edge.node);
   return (
     <div>
+      <SEO title="AI Storefront Generator" description="A silly assortment of e-commerce storefronts created with the power of machine learning!" />
       <section className="hero is-light">
         <div className="hero-body">
           <div className="container">
@@ -18,7 +18,8 @@ const IndexPage = ({ data }) => {
               AI Storefront Generator
             </h1>
             <p>
-              A silly assortment of e-commerce storefronts created with the power of machine learning!
+              A silly assortment of e-commerce storefronts
+              created with the power of machine learning!
             </p>
             <p>
               Built for the

@@ -52,6 +52,7 @@ const createAboutUsPage = async (createPage, node, textAnalysis) => {
       title: aboutUs.title,
       text: aboutUs.text,
       imageUrl: aboutUs.imageUrl,
+      imageAlt: `A deep-ai generated image of ${node.frontmatter.name}`,
       pagePath: `${node.fields.slug}about-us`,
       parentPath: node.fields.slug,
       name: node.frontmatter.name,

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Img from 'gatsby-image';
 import Layout from '../components/layout';
-// import SEO from '../components/seo';
+import SEO from '../components/seo';
 import Annotation from '../components/annotation';
 
 export default function StorefrontTemplate({ data, pageContext }) {
@@ -14,7 +14,7 @@ export default function StorefrontTemplate({ data, pageContext }) {
       navHomePath={pageContext.pagePath}
       render={({ isAnnotationsToggled }) => (
         <>
-          {/* <SEO title={title} /> */}
+          <SEO title={pageContext.name} description="Unique products, made-to-order" />
           <div className="section">
             <p className="title">
               Unique products, made-to-order
