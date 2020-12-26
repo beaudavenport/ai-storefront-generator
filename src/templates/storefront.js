@@ -7,7 +7,7 @@ import SEO from '../components/seo';
 import Annotation from '../components/annotation';
 
 export default function StorefrontTemplate({ data, pageContext }) {
-  const { allSitePage } = data;
+  const { sitePage, allSitePage } = data;
   return (
     <Layout
       title={pageContext.name}
@@ -16,12 +16,27 @@ export default function StorefrontTemplate({ data, pageContext }) {
         <>
           <SEO title={pageContext.name} description="Unique products, made-to-order" />
           <div className="section">
-            <p className="title">
-              Unique products, made-to-order
-            </p>
-            <p className="subtitle">
-              Browse our selection of offerings below!
-            </p>
+            <div className="media">
+              <figure className="media-left is-align-self-center">
+                <p className="image is-64x64">
+                  <Img
+                    fixed={sitePage.image.childImageSharp.fixed}
+                    alt={sitePage.context.imageAlt}
+                  />
+                </p>
+              </figure>
+              <div className="media-content">
+                <div className="content">
+                  <p className="title">
+                    Unique products, made-to-order
+                  </p>
+                  <p className="subtitle">
+                    Browse our selection of offerings below!
+                  </p>
+                </div>
+              </div>
+            </div>
+            <hr />
           </div>
           <div className="section">
             <div className="columns">
@@ -44,7 +59,7 @@ export default function StorefrontTemplate({ data, pageContext }) {
                         />
                       </div>
                     </figure>
-                    <div>
+                    <div className="media-content">
                       <div className="content is-flex is-justify-content-flex-start">
                         <div>
                           <p className="is-size-5">
@@ -79,7 +94,18 @@ StorefrontTemplate.propTypes = {
 
 export const pageQuery = graphql`
   query($path: String!) {
-    
+    sitePage(context: {pagePath: {eq: $path}}) {
+      context {
+        imageAlt
+      }
+      image {
+        childImageSharp {
+          fixed(width: 64) {
+            ...GatsbyImageSharpFixed
+          }
+        }
+      }
+    }
     allSitePage(filter: {path: {}, context: {parentPath: {eq: $path}, type: {eq: "Product"}}}) {
       edges {
         node {
@@ -93,7 +119,7 @@ export const pageQuery = graphql`
           }
           image {
             childImageSharp {
-              fixed(width: 100) {
+              fixed(width: 128) {
                 ...GatsbyImageSharpFixed
               }
             }

@@ -7,6 +7,7 @@ import SEO from '../components/seo';
 import Annotation from '../components/annotation';
 
 export default function AboutUsTemplate({ pageContext, data }) {
+  const { parentPage } = data;
   return (
     <Layout
       title={pageContext.name}
@@ -21,8 +22,8 @@ export default function AboutUsTemplate({ pageContext, data }) {
                   <h1 className="title">{pageContext.title}</h1>
                 </div>
               </div>
-              <div className="column is-4-desktop">
-                <figure className="image">
+              <div className="column is-5-desktop is-flex is-align-items-center is-justify-content-center">
+                <div className="image">
                   <div className="is-flex is-justify-content-center">
                     <Annotation placement="top" isActive={isAnnotationsToggled}>
                       <strong>
@@ -31,10 +32,10 @@ export default function AboutUsTemplate({ pageContext, data }) {
                     </Annotation>
                   </div>
                   <Img
-                    fluid={data.sitePage.image.childImageSharp.fluid}
-                    alt={data.sitePage.context.imageAlt}
+                    fixed={parentPage.image.childImageSharp.fixed}
+                    alt={parentPage.context.imageAlt}
                   />
-                </figure>
+                </div>
               </div>
             </div>
             <div className="section">
@@ -52,16 +53,15 @@ AboutUsTemplate.propTypes = {
 };
 
 export const pageQuery = graphql`
-  query($path: String!) {
-    sitePage(context: {pagePath: {eq: $path}}) {
-      id
+  query($parentPath: String!) {
+    parentPage: sitePage(context: {pagePath: {eq: $parentPath}}) {
       context {
         imageAlt
       }
       image {
         childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid
+          fixed(width: 250) {
+            ...GatsbyImageSharpFixed
           }
         }
       }

@@ -8,6 +8,8 @@ const googleLanguageAPIService = require('./src/services/googleLanguageAPIServic
 const createMainStorefrontPage = async (createPage, node) => {
   const storefrontTemplate = path.resolve('src/templates/storefront.js');
   const fakeDescription = await Promise.resolve(`Fake asynchronous generated description for: + ${node.frontmatter.name}`);
+  const mainImageUrl = await deepAIAPIService.getImageUrlFromText(node.frontmatter.name);
+  const mainImageAlt = `An AI-generated image of ${node.frontmatter.name}`;
   createPage({
     path: node.fields.slug,
     component: storefrontTemplate,
@@ -15,6 +17,8 @@ const createMainStorefrontPage = async (createPage, node) => {
       fakeDescription,
       pagePath: node.fields.slug,
       name: node.frontmatter.name,
+      imageUrl: mainImageUrl,
+      imageAlt: mainImageAlt,
     },
   });
 };
