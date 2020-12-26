@@ -22,8 +22,7 @@ export default function ProductTemplate({ data, pageContext }) {
                   <div className="is-flex is-justify-content-center">
                     <Annotation placement="top" isActive={isAnnotationsToggled}>
                       <strong>
-                        Product images are provided through the Unsplash API,
-                        the first result for the given "search term" of the product name.
+                        Product images are generated with Deep AI, providing the product name.
                       </strong>
                     </Annotation>
                   </div>
@@ -37,11 +36,11 @@ export default function ProductTemplate({ data, pageContext }) {
                 <div>
                   <p className="title">{pageContext.productName}</p>
                   <p className="subtitle">$99.99</p>
-                  <p>Nothing better than a great description of a good product.</p>
+                  {sitePage.context.productDescription.split('\n').slice(0, 2).map((paragraph) => (<p key={paragraph}>{paragraph}</p>))}
                   <div className="is-flex is-justify-content-center">
                     <Annotation placement="bottom" isActive={isAnnotationsToggled}>
                       <strong>
-                        {`Descriptions are generated with Deep AI, with given prompt: "A description for ${pageContext.productName}"`}
+                        {`Descriptions are generated with Deep AI, with given prompt: "${pageContext.productName} is"`}
                       </strong>
                     </Annotation>
                   </div>
@@ -136,6 +135,7 @@ export const pageQuery = graphql`
       id
       context {
         imageAlt
+        productDescription
       }
       image {
         childImageSharp {

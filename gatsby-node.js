@@ -27,7 +27,11 @@ const createProductPages = async (createPage, node, textAnalysis) => {
   const productTemplate = path.resolve('src/templates/product.js');
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
   return Promise.all(consumerGoods.map(async (entity, index) => {
-    const review = await deepAIAPIService.createProductReview(entity.name, entity.sentiment.score);
+    const review1 = await deepAIAPIService.createProductReview(entity.name, entity.sentiment.score);
+    const review2 = await deepAIAPIService.createProductReview(entity.name, entity.sentiment.score);
+    const productDescription = await deepAIAPIService.createProductDescription(entity.name);
+    const imageUrl = await deepAIAPIService.getImageUrlFromText(node.frontmatter.name);
+
     createPage({
       path: `${node.fields.slug}${index}`,
       component: productTemplate,
@@ -36,9 +40,10 @@ const createProductPages = async (createPage, node, textAnalysis) => {
         pagePath: `${node.fields.slug}${index}`,
         parentPath: node.fields.slug,
         productName: entity.name,
-        imageUrl: 'https://images.unsplash.com/photo-1603038124597-2c5c207edf47',
-        imageAlt: `A picture from unsplash of ${entity.name}`,
-        reviews: [review],
+        productDescription,
+        imageUrl,
+        imageAlt: `A deep-ai generated image of ${entity.name}`,
+        reviews: [review1, review2],
       },
     });
     Promise.resolve();

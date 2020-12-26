@@ -47,8 +47,7 @@ export default function StorefrontTemplate({ data, pageContext }) {
                       <div className="is-flex is-justify-content-center">
                         <Annotation placement="top" isActive={isAnnotationsToggled}>
                           <strong>
-                            Product images are provided through the Unsplash API,
-                            the first result for the given "search term" of the product name.
+                            Product images are generated with Deep AI, providing the product name.
                           </strong>
                         </Annotation>
                       </div>
@@ -67,6 +66,9 @@ export default function StorefrontTemplate({ data, pageContext }) {
                             <br />
                             <small>$99.99</small>
                           </p>
+                          <p className="is-size-7 subtitle">
+                            {edge.node.context.productDescription.split('\n')[0]}
+                          </p>
                           <div className="is-flex is-justify-content-center">
                             <Annotation placement="bottom" isActive={isAnnotationsToggled}>
                               <strong>
@@ -74,7 +76,9 @@ export default function StorefrontTemplate({ data, pageContext }) {
                               </strong>
                             </Annotation>
                           </div>
-                          <Link to={edge.node.context.pagePath} className="button is-primary">View</Link>
+                          <p>
+                            <Link to={edge.node.context.pagePath} className="button is-primary">View Details</Link>
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -116,6 +120,7 @@ export const pageQuery = graphql`
             pagePath
             productName
             imageAlt
+            productDescription
           }
           image {
             childImageSharp {

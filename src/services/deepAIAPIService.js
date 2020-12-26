@@ -117,6 +117,21 @@ const fakeBootsReviewResponse = {
   id: '38745339-0eee-48f4-b3c2-af86ae27e006',
 };
 
+const fakeproductDescription = {
+  output: 'Jeans are the other ones who do it, too: a few brave souls have spent my whole life trying to make their way through the mountains and hills of the desert.\n'
+  + 'The "thrumb" of a great mountain is often carved through a place. They were once meant to be the sum of a hill. The name was derived from an adventure for a number of people — their horses, waterfowl and all. The "thrumb" is a Greek word for "the road", but it was known only from the Greek words for water: dam-bridge. In the West, this phrase is said to have "thrumbed the bridge" over the valley — in Greek it was "beginning in the path" or a separate word, "emergency," or "unexplained." They knew the "thrumb" as an extended river: it referred to a river. As the mountain grew larger for them, a bridge of rock and water had to be built to sustain the mountains from the desert to the surface.\n'
+  + 'This is an account of a spectacular mountain. As well as the caves on a mountain plateau, the Alps in the Alps are a great example of the extreme lengths of human civilization. The cave of 18,500 was often decorated for its luxury of the sun, but was the first to have enough stone to show stone on it of its own.'
+  + 'But the way the mountains came to the place of the caves was not a good idea. They were not as visible as the rivers.',
+};
+
+const createProductDescription = async (productName) => {
+  // const resp = await deepai.callStandardApi('text-generator', {
+  //   text: `${productName} are`,
+  // });
+  const productDescription = Promise.resolve(fakeproductDescription);
+  return (await productDescription).output;
+};
+
 const createProductReview = async (productName, productSentimentScore) => {
   // deepai.setApiKey(TODO: ENV VAR);
   // const resp = await deepai.callStandardApi('text2img', {
@@ -154,6 +169,7 @@ const getImageUrlFromText = async (text) => {
 
 module.exports = {
   createProductReview,
+  createProductDescription,
   createAboutUs,
   getImageUrlFromText,
 };
