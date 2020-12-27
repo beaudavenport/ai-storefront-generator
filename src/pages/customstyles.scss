@@ -5,4 +5,8 @@
 $popover-background-color: #ffdd57;
 
 @import "~bulma/bulma.sass";
-@import "~bulma-popover/bulma-popover.scss"
+@import "~bulma-popover/bulma-popover.scss";
+
+.popover-content {
+  max-width: 200px !important;
+}

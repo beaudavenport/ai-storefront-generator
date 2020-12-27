@@ -39,7 +39,51 @@ export default function StorefrontTemplate({ data, pageContext }) {
             <hr />
           </div>
           <div className="section">
-            <div className="columns">
+            <div className="columns is-multiline">
+              {allSitePage.edges.map((edge) => (
+                <div className="column mb-4 is-one-third-desktop">
+                  <div className="media is-justify-content-center">
+                    <figure className="media-left">
+                      <div className="is-flex is-justify-content-center ml-6">
+                        <Annotation placement="top" isActive={isAnnotationsToggled}>
+                          <strong>
+                            Product images are generated with Deep AI, providing the product name.
+                          </strong>
+                        </Annotation>
+                      </div>
+                      <div className="image is-128X128">
+                        <Img
+                          fixed={edge.node.image.childImageSharp.fixed}
+                          alt={edge.node.context.imageAlt}
+                        />
+                      </div>
+                    </figure>
+                    <div className="">
+                      <div className="is-flex is-justify-content-flex-start">
+                        <div>
+                          <p className="is-size-5">
+                            <strong>{edge.node.context.productName}</strong>
+                            <Annotation placement="bottom" isActive={isAnnotationsToggled}>
+                              <strong>
+                                Product names are extracted from the text prompt by Google analysis on terms considered "CONSUMER_GOOD"
+                              </strong>
+                            </Annotation>
+                            <br />
+                            <small>$99.99</small>
+                          </p>
+                          <p className="is-size-7 subtitle">
+                            {edge.node.context.productDescription.split('\n')[0]}
+                          </p>
+                          <p>
+                            <Link to={edge.node.context.pagePath} className="button is-primary">View Details</Link>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {/* temp duplication for styling */}
               {allSitePage.edges.map((edge) => (
                 <div className="column mb-4 is-one-third-desktop">
                   <div className="media is-justify-content-center">
@@ -63,19 +107,17 @@ export default function StorefrontTemplate({ data, pageContext }) {
                         <div>
                           <p className="is-size-5">
                             <strong>{edge.node.context.productName}</strong>
+                            <Annotation placement="bottom" isActive={isAnnotationsToggled}>
+                              <strong>
+                                Product names are extracted from the text prompt by Google analysis on terms considered "CONSUMER_GOOD"
+                              </strong>
+                            </Annotation>
                             <br />
                             <small>$99.99</small>
                           </p>
                           <p className="is-size-7 subtitle">
                             {edge.node.context.productDescription.split('\n')[0]}
                           </p>
-                          <div className="is-flex is-justify-content-center">
-                            <Annotation placement="bottom" isActive={isAnnotationsToggled}>
-                              <strong>
-                                Product names are extracted from the text prompt by Google analysis on terms considered "CONSUMER_GOOD"
-                              </strong>
-                            </Annotation>
-                          </div>
                           <p>
                             <Link to={edge.node.context.pagePath} className="button is-primary">View Details</Link>
                           </p>

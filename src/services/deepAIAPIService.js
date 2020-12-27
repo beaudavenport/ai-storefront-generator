@@ -163,7 +163,7 @@ const getImageUrlFromText = async (text) => {
   // const resp = await deepai.callStandardApi('text2img', {
   //   text,
   // });
-  const imageUrl = Promise.resolve('https://api.deepai.org/job-view-file/b041f4a0-9f80-47dc-b05b-f16df04c109f/outputs/output.jpg');
+  const imageUrl = Promise.resolve('https://placekitten.com/300/300');
   return imageUrl;
 };
 

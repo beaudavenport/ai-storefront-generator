@@ -47,6 +47,10 @@ const Layout = ({ title, navHomePath, render }) => {
                       Hide Annotations
                     </button>
                   )}
+                </div>
+              </div>
+              <div className="navbar-item">
+                <div className="buttons">
                   <Link to="/" className="button is-link">
                     Back to Entries
                   </Link>
