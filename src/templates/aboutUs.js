@@ -8,7 +8,8 @@ import Annotation from '../components/annotation';
 
 export default function AboutUsTemplate({ pageContext, data }) {
   const { parentPage } = data;
-  const [firstParagraph, ...otherParagraphs] = pageContext.text.split('\n');
+  const aboutUsParagraphs = pageContext.text || '';
+  const [firstParagraph, ...otherParagraphs] = aboutUsParagraphs.split('\n');
   return (
     <Layout
       title={pageContext.name}
