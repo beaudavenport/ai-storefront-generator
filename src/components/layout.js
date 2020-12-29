@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'gatsby';
@@ -17,8 +20,8 @@ const Layout = ({ title, navHomePath, render }) => {
             <a
               role="button"
               className="navbar-burger"
-              ariaLabel="menu"
-              ariaExpanded="false"
+              ari-label="menu"
+              aria-expanded="false"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <span aria-hidden="true" />
@@ -71,7 +74,7 @@ const Layout = ({ title, navHomePath, render }) => {
 Layout.propTypes = {
   title: PropTypes.string.isRequired,
   navHomePath: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
+  render: PropTypes.func.isRequired,
 };
 
 export default Layout;

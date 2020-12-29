@@ -2,8 +2,10 @@ const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
 
-const deepAIAPIService = require('./src/services/deepAIAPIService');
-const googleLanguageAPIService = require('./src/services/googleLanguageAPIService');
+const MOCK_SERVICES = true;
+
+const deepAIAPIService = MOCK_SERVICES ? require('./src/services/mockDeepAIAPIService') : require('./src/services/deepAIAPIService');
+const googleLanguageAPIService = MOCK_SERVICES ? require('./src/services/mockGoogleLanguageAPIService') : require('./src/services/googleLanguageAPIService');
 
 const createMainStorefrontPage = async (createPage, node) => {
   const storefrontTemplate = path.resolve('src/templates/storefront.js');
@@ -23,12 +25,23 @@ const createMainStorefrontPage = async (createPage, node) => {
   });
 };
 
+const getProductStars = (sentimentScore) => {
+  if (sentimentScore > 0.2) {
+    return 5;
+  }
+  if (sentimentScore < -0.2) {
+    return 1;
+  }
+  return 3;
+};
+
 const createProductPages = async (createPage, node, textAnalysis) => {
   const productTemplate = path.resolve('src/templates/product.js');
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
   return Promise.all(consumerGoods.map(async (entity, index) => {
-    const review1 = await deepAIAPIService.createProductReview(entity.name, entity.sentiment.score);
-    const review2 = await deepAIAPIService.createProductReview(entity.name, entity.sentiment.score);
+    const stars = getProductStars(entity.sentiment.score);
+    const review1 = await deepAIAPIService.createProductReview(entity.name, stars);
+    const review2 = await deepAIAPIService.createProductReview(entity.name, stars);
     const productDescription = await deepAIAPIService.createProductDescription(entity.name);
     const imageUrl = await deepAIAPIService.getImageUrlFromText(node.frontmatter.name);
 
@@ -43,6 +56,7 @@ const createProductPages = async (createPage, node, textAnalysis) => {
         productDescription,
         imageUrl,
         imageAlt: `A deep-ai generated image of ${entity.name}`,
+        stars,
         reviews: [review1, review2],
       },
     });
@@ -94,6 +108,7 @@ exports.onCreateNode = async ({
     });
       // if the file was created, attach the new node to the parent node
     if (fileNode) {
+      // eslint-disable-next-line no-param-reassign
       node.image___NODE = fileNode.id;
     }
   }

@@ -64,32 +64,33 @@ export default function ProductTemplate({ data, pageContext }) {
               {pageContext.reviews.map((review) => {
                 const paragraphs = review.review.split('A positive review of')[1].split('\n');
                 return (
-
-                  <div className="section">
+                  <div className="section" key={paragraphs[0]}>
                     <div className="is-flex is-justify-content-center">
                       <Annotation placement="top" isActive={isAnnotationsToggled}>
                         <strong>
-                          Rating based on Google&apos;s Sentiment Analysis score within text prompt (1 star for negative, 3 stars for neutral, 5 stars for positive)
+                          Rating based on Google&apos;s Sentiment Analysis score within text prompt
+                          (1 star for negative, 3 stars for neutral, 5 stars for positive)
                         </strong>
                       </Annotation>
                     </div>
                     <p>
-                      {new Array(review.stars).fill().map(() => (
-                        <span className="icon is-small">
+                      {new Array(pageContext.stars).fill().map((_, i) => (
+                        // eslint-disable-next-line react/no-array-index-key
+                        <span className="icon is-small" key={`${i}`}>
                           <i className="fas fa-star" />
                         </span>
                       ))}
                       <strong className="ml-3">{paragraphs[0]}</strong>
                     </p>
                     <div className="block">
+                      <div className="ml-6">
+                        <Annotation placement="top" isActive={isAnnotationsToggled}>
+                          <strong>
+                            A random name
+                          </strong>
+                        </Annotation>
+                      </div>
                       <p>
-                        <div className="ml-6">
-                          <Annotation placement="top" isActive={isAnnotationsToggled}>
-                            <strong>
-                              A random name
-                            </strong>
-                          </Annotation>
-                        </div>
                         <i className="fa fa-user" aria-hidden="true" />
                         <small>
                           {' '}
@@ -102,7 +103,7 @@ export default function ProductTemplate({ data, pageContext }) {
                       <div className="is-flex is-justify-content-center">
                         <Annotation placement="bottom" isActive={isAnnotationsToggled}>
                           <strong>
-                            {`Review title and content are generated with Deep AI, with given prompt (using "sentiment"): "A (positive/negative/neutral review for ${pageContext.productName}"`}
+                            {`Review title and content are generated with Deep AI, with given prompt (using "sentiment"): "A (positive/negative/neutral) review for ${pageContext.productName}"`}
                           </strong>
                         </Annotation>
                       </div>
@@ -119,8 +120,15 @@ export default function ProductTemplate({ data, pageContext }) {
     />
   );
 }
+
 ProductTemplate.propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  pageContext: PropTypes.shape({
+    pagePath: PropTypes.string.isRequired,
+    productName: PropTypes.string.isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.shape),
+    stars: PropTypes.number,
+  }).isRequired,
 };
 
 export const pageQuery = graphql`

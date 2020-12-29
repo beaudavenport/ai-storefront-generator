@@ -25,7 +25,8 @@ export default function AboutUsTemplate({ pageContext, data }) {
                   <div className="is-flex is-justify-content-center">
                     <Annotation placement="bottom" isActive={isAnnotationsToggled}>
                       <strong>
-                        About Us title indicates the origins of the storefront in the first "LOCATION" entity from Google Analysis.
+                        About Us title indicates the origins of the storefront in the first
+                        &quot;LOCATION &quot; entity from Google Analysis.
                       </strong>
                     </Annotation>
                   </div>
@@ -71,6 +72,12 @@ export default function AboutUsTemplate({ pageContext, data }) {
 
 AboutUsTemplate.propTypes = {
   data: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
+  pageContext: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    parentPath: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export const pageQuery = graphql`

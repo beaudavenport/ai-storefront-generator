@@ -72,50 +72,58 @@ const IndexPage = ({ data }) => {
               <h4 className="title is-4"><em>Add your own!</em></h4>
               <hr />
               <div className="content">
-                <p>You can create your own AI-generated storefront with a file-addition pull request. No cloning necessary!</p>
+                <p>
+                  You can create your own AI-generated storefront with a file-addition pull request.
+                  No cloning necessary!
+                </p>
                 <p>
                   Follow the link to the
                   {' '}
                   <a href="https://github.com/beaudavenport/ai-storefront-generator">Github project page</a>
                   {' '}
                   and select:
-                  <pre>Add file -> Create new file</pre>
-                  On the following screen, specify a new markdown file name for your prompt like so:
-                  <pre>src/prompts/my-cool-prompt.md</pre>
                 </p>
+                <pre>Add file -&gt; Create new file</pre>
                 <p>
-                  And complete the contents of your new prompt file with name, author, github, and prompt like so:
-                  <pre>
-                    <p>
-                      ---
-                      <br />
-                      name: Your Storefront Name
-                      <br />
-                      author: Your name
-                      <br />
-                      github: Your github username
-                      <br />
-                      ---
-                      <br />
-                      Your text prompt. Max length is 500 words. This will be used to generate the content for your storefront!
-                      <br />
-                      <br />
-                      Note: you can get a sense of the sort of content that might be created by visiting the
-                      <a href="https://cloud.google.com/natural-language"> Google Natural Language API Demo</a>
-                      <br />
-                      (in particular, ensure there are a  variety of CONSUMER_GOOD entities in the analysis,
-                      <br />
-                      as these will be converted into products for your storefront!)
-                    </p>
-                  </pre>
-
+                  On the following screen, specify a new markdown file name for your prompt like so:
                 </p>
+                <pre>src/prompts/my-cool-prompt.md</pre>
+                <p>
+                  And complete the contents of your new prompt file with name, author, github,
+                  and prompt like so:
+                </p>
+                <pre>
+                  <p>
+                    ---
+                    <br />
+                    name: Your Storefront Name
+                    <br />
+                    author: Your name
+                    <br />
+                    github: Your github username
+                    <br />
+                    ---
+                    <br />
+                    Your text prompt. Max length is 500 words.
+                    This will be used to generate the content for your storefront!
+                    <br />
+                    <br />
+                    Note: you can get a sense of the sort of content
+                    that might be created by visiting the
+                    <a href="https://cloud.google.com/natural-language"> Google Natural Language API Demo</a>
+                    <br />
+                    (in particular, ensure there are a  variety of
+                    CONSUMER_GOOD entities in the analysis,
+                    <br />
+                    as these will be converted into products for your storefront!)
+                  </p>
+                </pre>
                 <p>
                   Finally, fill out the
                   {' '}
                   <strong>propose new file</strong>
                   {' '}
-                  commit section and submit. I'll approve as soon as I can!
+                  commit section and submit. I&apos;ll approve as soon as I can!
                 </p>
               </div>
               <p>
