@@ -64,7 +64,7 @@ export default function StorefrontTemplate({ data, pageContext }) {
                           <p className="is-size-5">
                             <strong>{edge.node.context.productName}</strong>
                             <br />
-                            <small>$99.99</small>
+                            <small>{edge.node.context.productPrice}</small>
                           </p>
                           <p>
                             {new Array(edge.node.context.stars).fill().map((_, i) => (
@@ -130,6 +130,7 @@ export const pageQuery = graphql`
             name
             pagePath
             productName
+            productPrice
             stars
             imageAlt
             productDescription

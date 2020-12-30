@@ -1,48 +1,22 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal starter
-</h1>
+# AI Storefront Generator
 
-## 🚀 Quick start
+### A contribution to the [Gatsby Silly Site Challenge 2020](https://www.gatsbyjs.com/silly-site-challenge/)
 
-1.  **Create a Gatsby site.**
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+#### How it works
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
 
-2.  **Start developing.**
+AI Storefront Generator leverages Google's NLP API to analyze the contents of a provided prompt (in markdown format),
+then build an e-commerce storefront for the prompt (with AI-generated images, descriptions, reviews, etc. powered by Deep AI).
 
-    Navigate into your new site’s directory and start it up.
+All of the above takes place using Gatsby's Node API at **build time**, ultimately producing a series of static, deployable storefronts.
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+#### Contributions welcome!
 
-3.  **Open the code and start customizing!**
 
-    Your site is now running at http://localhost:8000!
+You can add your own storefront by submitting a basic pull request, adding a new prompt file with your name, github, a tagline for the entry, and the actual text content.
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+Before contributing, test out the analysis of your prompt's text content here:
 
-4.  **Learn more**
+In particular, an analysis with a variety of "CONSUMER_GOOD" entries will produce a more feature-rich storefront. A new prompt addition will also rebuild all other storefronts, with slightly different images, descriptions, etc!
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)

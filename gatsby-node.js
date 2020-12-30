@@ -1,16 +1,20 @@
+/* eslint-disable no-restricted-syntax */
+
 const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
+const slugify = require('slugify');
 
-const MOCK_SERVICES = true;
+const MOCK_SERVICES = false;
 
 const deepAIAPIService = MOCK_SERVICES ? require('./src/services/mockDeepAIAPIService') : require('./src/services/deepAIAPIService');
 const googleLanguageAPIService = MOCK_SERVICES ? require('./src/services/mockGoogleLanguageAPIService') : require('./src/services/googleLanguageAPIService');
 
 const createMainStorefrontPage = async (createPage, node) => {
+  console.log(`creating storefront for ${node.frontmatter.name}`);
   const storefrontTemplate = path.resolve('src/templates/storefront.js');
   const fakeDescription = await Promise.resolve(`Fake asynchronous generated description for: + ${node.frontmatter.name}`);
-  const mainImageUrl = await deepAIAPIService.getImageUrlFromText(node.frontmatter.name);
+  const mainImageUrl = await deepAIAPIService.postText2Image(node.frontmatter.name);
   const mainImageAlt = `An AI-generated image of ${node.frontmatter.name}`;
   createPage({
     path: node.fields.slug,
@@ -23,6 +27,7 @@ const createMainStorefrontPage = async (createPage, node) => {
       imageAlt: mainImageAlt,
     },
   });
+  return Promise.resolve();
 };
 
 const getProductStars = (sentimentScore) => {
@@ -36,51 +41,68 @@ const getProductStars = (sentimentScore) => {
 };
 
 const createProductPages = async (createPage, node, textAnalysis) => {
+  console.log(`creating product pages for ${node.frontmatter.name}`);
   const productTemplate = path.resolve('src/templates/product.js');
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
-  return Promise.all(consumerGoods.map(async (entity, index) => {
-    const stars = getProductStars(entity.sentiment.score);
-    const review1 = await deepAIAPIService.createProductReview(entity.name, stars);
-    const review2 = await deepAIAPIService.createProductReview(entity.name, stars);
-    const productDescription = await deepAIAPIService.createProductDescription(entity.name);
-    const imageUrl = await deepAIAPIService.getImageUrlFromText(node.frontmatter.name);
-
+  for await (const consumerGood of consumerGoods) {
+    const stars = getProductStars(consumerGood.sentiment.score);
+    const review1 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
+    const review2 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
+    const productDescription = await deepAIAPIService.createProductDescription(consumerGood.name);
+    const imageUrl = await deepAIAPIService.postText2Image(node.frontmatter.name);
     createPage({
-      path: `${node.fields.slug}${index}`,
+      path: `${node.fields.slug}${slugify(consumerGood.name)}`,
       component: productTemplate,
       context: {
         type: 'Product',
-        pagePath: `${node.fields.slug}${index}`,
+        pagePath: `${node.fields.slug}${slugify(consumerGood.name)}`,
         parentPath: node.fields.slug,
-        productName: entity.name,
+        productName: consumerGood.name,
+        productPrice: `$${Math.floor(Math.random() * (100 - 2))}.99`,
         productDescription,
         imageUrl,
-        imageAlt: `A deep-ai generated image of ${entity.name}`,
+        imageAlt: `A deep-ai generated image of ${consumerGood.name}`,
         stars,
         reviews: [review1, review2],
       },
     });
-    Promise.resolve();
-  }));
+  }
+  return Promise.resolve();
 };
 
 const createAboutUsPage = async (createPage, node, textAnalysis) => {
+  console.log(`creating about us for ${node.frontmatter.name}`);
   const aboutUsTemplate = path.resolve('src/templates/aboutUs.js');
   const locations = textAnalysis.filter((entity) => entity.type === 'LOCATION').map((entity) => entity.name);
-  const aboutUs = await deepAIAPIService.createAboutUs(node.frontmatter.name, locations);
+  const prompt = `The story of ${node.frontmatter.name} begins in ${locations.length ? `${locations[0]}.` : 'a commitment to quality.'}`;
+  let aboutUsDescription;
+  let aboutUsImage;
+  try {
+    aboutUsDescription = await deepAIAPIService.createAboutUsDescription(node.frontmatter.name, prompt);
+  } catch (ex) {
+    console.log('failed to make about us description. falling back', ex);
+    aboutUsDescription = 'Deep AI was unable to generate a description for this storefront!';
+  }
+  try {
+    aboutUsImage = await deepAIAPIService.createAboutUsImage(node.frontmatter.name, prompt);
+  } catch (ex) {
+    console.log('failed to make about us image. falling back', ex);
+    aboutUsImage = 'https://placekitten.com/300/300';
+  }
   createPage({
     path: `${node.fields.slug}about-us`,
     component: aboutUsTemplate,
     context: {
-      title: aboutUs.title,
-      text: aboutUs.text,
-      imageUrl: aboutUs.imageUrl,
+      title: prompt,
+      text: aboutUsDescription,
+      imageUrl: aboutUsImage,
       imageAlt: `A deep-ai generated image of ${node.frontmatter.name}`,
       pagePath: `${node.fields.slug}about-us`,
       parentPath: node.fields.slug,
       name: node.frontmatter.name,
     },
   });
+  return Promise.resolve();
 };
 
 exports.onCreateNode = async ({
@@ -128,6 +150,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
               fields {
                 slug
               }
+              excerpt(pruneLength: 500)
             }
           }
         }
@@ -138,13 +161,17 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     reporter.panicOnBuild('Error while running GraphQL query.');
     return Promise.reject();
   }
+
   // Create storefront layout and product pages based on results of analysis for each prompt.
-  const pageCreationPromises = result.data.allMarkdownRemark.edges.map(async ({ node }) => {
+  for await (const edge of result.data.allMarkdownRemark.edges) {
+    const { node } = edge;
+    console.log('i am getting called');
     const textAnalysis = await googleLanguageAPIService.getTextAnalysis(node.excerpt);
     await createMainStorefrontPage(createPage, node);
-    await createProductPages(createPage, node, textAnalysis);
     await createAboutUsPage(createPage, node, textAnalysis);
-    return Promise.resolve();
-  });
-  return Promise.all(pageCreationPromises);
+    await createProductPages(createPage, node, textAnalysis);
+    console.log('gonna resolve now');
+  }
+  console.log('now you call me at long last');
+  return Promise.resolve();
 };

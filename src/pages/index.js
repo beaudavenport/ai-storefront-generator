@@ -97,7 +97,7 @@ const IndexPage = ({ data }) => {
             from the storefront navigation menu
             to see a breakdown of components that have AI-generated content!
           </p>
-          <h3 className="title is-5">Why Gatsby?</h3>
+          <h3 className="title is-5">The Benefits of Gatsby</h3>
           <p className="block">
             <strong>
               <a href="https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/">The Gatsby Node API</a>
@@ -138,6 +138,7 @@ const IndexPage = ({ data }) => {
               all the storefronts will be rebuilt, with new AI-generated content. How exciting!
             </strong>
           </p>
+          <hr />
           <h3 className="title is-4">Entries</h3>
           <p className="title is-6">
             All of the below entries have been converted into storefronts.

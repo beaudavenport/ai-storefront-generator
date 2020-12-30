@@ -1,19 +1,51 @@
-const deepai = require('deepai');
+const axios = require('axios');
 const randomName = require('random-name');
+const FormData = require('form-data');
 
-// deepai.setApiKey(TODO: ENV VAR);
+// The DeepAI API appears very sensitive to being overwhelmed. Add delays.
+const sleep = () => new Promise((resolve) => setTimeout(resolve, 10000));
 
-const getImageUrlFromText = async (text) => {
-  const response = await deepai.callStandardApi('text2img', {
-    text,
-  });
-  return response.output;
+const postText2Image = async (text) => {
+  console.log('getting image from text for ', text);
+  try {
+    const response = await axios.post('https://api.deepai.org/api/text2img', {
+      text,
+    }, {
+      headers: {
+        'Api-Key': process.env.DEEP_AI_API_KEY,
+      },
+    });
+    await sleep();
+    return response.data.output_url;
+  } catch (ex) {
+    console.log(ex.response);
+    throw ex;
+  }
+};
+
+const postTextGeneration = async (text) => {
+  console.log('generating text for ', text);
+  try {
+    const formData = new FormData();
+    formData.append('text', text);
+    const formHeaders = formData.getHeaders();
+    const response = await axios.post('https://api.deepai.org/api/text-generator', formData, {
+      headers: {
+        'Api-Key': process.env.DEEP_AI_API_KEY,
+        ...formHeaders,
+      },
+    });
+    await sleep();
+    return response.data.output;
+  } catch (ex) {
+    console.log(ex.response);
+    throw ex;
+  }
 };
 
 const createProductDescription = async (productName) => {
-  const response = await deepai.callStandardApi('text-generator', {
-    text: `${productName} are`,
-  });
+  console.log('getting product description for ', productName);
+  const response = await postTextGeneration(`${productName} are`);
   return response.output;
 };
 
@@ -24,33 +56,31 @@ const starsToSentiment = {
 };
 
 const createProductReview = async (productName, stars) => {
-  const response = await deepai.callStandardApi('text-generator', {
-    text: `A ${starsToSentiment[stars]} review of ${productName}`,
-  });
+  console.log('creating product review for ', productName);
+  const generatedText = await postTextGeneration(`A ${starsToSentiment[stars]} review of ${productName}`);
   const reviewWithScore = {
-    review: response.output,
+    review: generatedText,
     reviewer: randomName(),
   };
   return reviewWithScore;
 };
 
-const createAboutUs = async (storeName, locations) => {
-  const prompt = `The story of ${storeName} begins in ${locations.length ? `${locations[0]}.` : ' a commitment to quality.'}`;
-  const textResponse = await deepai.callStandardApi('text-generator', {
-    text: prompt,
-  });
-  const imageResponse = await getImageUrlFromText(prompt);
-  const aboutUs = {
-    title: prompt,
-    text: textResponse.output,
-    imageUrl: imageResponse.output,
-  };
-  return aboutUs;
+const createAboutUsDescription = async (storeName, prompt) => {
+  console.log('creating about us page description for ', storeName);
+  const generatedText = await postTextGeneration(prompt);
+  return generatedText;
+};
+
+const createAboutUsImage = async (storeName, prompt) => {
+  console.log('creating about us page image for ', storeName);
+  const outputUrl = await postText2Image(prompt);
+  return outputUrl;
 };
 
 module.exports = {
   createProductReview,
   createProductDescription,
-  createAboutUs,
-  getImageUrlFromText,
+  createAboutUsDescription,
+  createAboutUsImage,
+  postText2Image,
 };

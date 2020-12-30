@@ -35,7 +35,7 @@ export default function ProductTemplate({ data, pageContext }) {
               <div className="column is-flex is-align-items-center is-justify-content-center">
                 <div>
                   <p className="title">{pageContext.productName}</p>
-                  <p className="subtitle">$99.99</p>
+                  <p className="subtitle">{pageContext.productPrice}</p>
                   {sitePage.context.productDescription.split('\n').slice(0, 2).map((paragraph) => (
                     <p className="block" key={paragraph}>{paragraph}</p>
                   ))}
@@ -126,6 +126,7 @@ ProductTemplate.propTypes = {
   pageContext: PropTypes.shape({
     pagePath: PropTypes.string.isRequired,
     productName: PropTypes.string.isRequired,
+    productPrice: PropTypes.string.isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape),
     stars: PropTypes.number,
   }).isRequired,

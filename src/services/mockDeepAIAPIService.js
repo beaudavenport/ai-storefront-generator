@@ -148,7 +148,7 @@ const createAboutUs = async (storeName, locations) => {
   return Promise.resolve(aboutUs);
 };
 
-const getImageUrlFromText = async () => {
+const postText2Image = async () => {
   const imageUrl = Promise.resolve('https://placekitten.com/300/300');
   return imageUrl;
 };
@@ -157,5 +157,5 @@ module.exports = {
   createProductReview,
   createProductDescription,
   createAboutUs,
-  getImageUrlFromText,
+  postText2Image,
 };
