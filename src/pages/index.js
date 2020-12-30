@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql, Link } from 'gatsby';
 import { PropTypes } from 'prop-types';
+import Img from 'gatsby-image';
 import Footer from '../components/footer';
 import SEO from '../components/seo';
 
@@ -9,30 +10,136 @@ const IndexPage = ({ data }) => {
   return (
     <div>
       <SEO title="AI Storefront Generator" description="A silly assortment of e-commerce storefronts created with the power of machine learning!" />
-      <section className="hero is-light">
+      <div className="hero is-light">
         <div className="hero-body">
           <div className="container">
-            <h1 className="title">
-              AI Storefront Generator
-            </h1>
-            <p>
-              A silly assortment of e-commerce storefronts
-              created with the power of machine learning!
-            </p>
-            <p>
-              Built for the
-              <a href="https://www.gatsbyjs.com/silly-site-challenge/">
-                {' '}
-                <strong>Gatsby Silly Site Challenge 2020</strong>
-              </a>
-            </p>
+            <div className="is-flex is-flex-direction-row is-justify-content-space-between">
+              <div>
+                <h1 className="title is-2">
+                  AI Storefront Generator
+                </h1>
+                <p>
+                  A silly assortment of e-commerce storefronts
+                  created with the power of machine learning!
+                </p>
+                <p>
+                  Built for the
+                  <a href="https://www.gatsbyjs.com/silly-site-challenge/">
+                    {' '}
+                    <strong>Gatsby Silly Site Challenge 2020</strong>
+                  </a>
+                </p>
+              </div>
+              <figure className="image is-128x128">
+                <Img
+                  fluid={data.heroImage.childImageSharp.fluid}
+                  alt="A silly AI-generated image of a Shop"
+                />
+              </figure>
+            </div>
           </div>
         </div>
-      </section>
-      <section className="section">
-        <div className="container">
-          <h3 className="title is-5">Entries</h3>
-          <p className="subtitle is-6">
+      </div>
+      <div className="container">
+        <section className="section">
+          <p className="title is-5">
+            Artificial Intelligence tools, in their current form, are quite powerful.
+          </p>
+          <p className="title is-5">
+            <em>
+              But they can also be pretty silly.
+            </em>
+          </p>
+          <p className="block">
+            <strong>AI Storefront Generator</strong>
+            {' '}
+            explores the silly side of AI by using
+            {' '}
+            <a href="https://en.wikipedia.org/wiki/Natural_language_processing">
+              Natural Language Processing (NLP)
+            </a>
+            {' '}
+            to analyze a text prompt, then using AI image and text
+            generation to create a fake e-commerce storefront.
+            {' '}
+            <strong>
+              Sadly, none of the products are actually for sale (at least, not yet...)
+            </strong>
+          </p>
+          <p className="block">
+            Each storefront consists of a
+            {' '}
+            <em>Products</em>
+            {' '}
+            page (with a list of all the entities
+            considered a
+            {' '}
+            <strong>CONSUMER_GOOD</strong>
+            {' '}
+            based on Google&apos;s Natural Language analysis), individual
+            product details pages (which include reviews based on the sentiment analysis of
+            the
+            {' '}
+            <strong>CONSUMER_GOOD</strong>
+            {' '}
+            in the original text), and an
+            {' '}
+            <em>About Us</em>
+            {' '}
+            page
+            with a featured image and AI-generated description of the storefront.
+          </p>
+          <p className="block">
+            As you explore the storefronts, select
+            {' '}
+            <strong>Show Annotations</strong>
+            {' '}
+            from the storefront navigation menu
+            to see a breakdown of components that have AI-generated content!
+          </p>
+          <h3 className="title is-5">Why Gatsby?</h3>
+          <p className="block">
+            <strong>
+              <a href="https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/">The Gatsby Node API</a>
+            </strong>
+            {' '}
+            provides a lot of neat capabilities. In addition to general manipulation of data
+            (i.e., turning markdown prompts into pages), you can also
+            {' '}
+            <strong>authenticate and consume third-party API&apos;s asynchronously,</strong>
+            {' '}
+            which
+            {' '}
+            <strong>AI Storefront Generator </strong>
+            leverages to consume the
+            {' '}
+            <strong>
+              <a href="https://cloud.google.com/natural-language">Google Natural Language</a>
+            </strong>
+            {' '}
+            and
+            {' '}
+            <strong>
+              <a href="https://deepai.org/apis">Deep AI</a>
+            </strong>
+            {' '}
+            API&apos;s
+            {' '}
+            <strong>at build time,</strong>
+            {' '}
+            while providing a purely static (and therefore
+            fast and secure) experience for actual visitors to the site.
+          </p>
+          <p className="block">
+            An interesting outcome of this functionality is that anytime
+            a new entry prompt is added,
+            {' '}
+            <strong>
+              all the storefronts will be rebuilt, with new AI-generated content. How exciting!
+            </strong>
+          </p>
+          <h3 className="title is-4">Entries</h3>
+          <p className="title is-6">
             All of the below entries have been converted into storefronts.
             Click on &quot;View Storefront&quot; to see!
           </p>
@@ -41,25 +148,28 @@ const IndexPage = ({ data }) => {
               <div className="content">
                 <h4 className="title is-4">{node.frontmatter.name}</h4>
                 <p>
-                  Added by:
-                  {' '}
+                  <small>Added by:</small>
+                  <br />
                   <strong>
                     {node.frontmatter.author}
                   </strong>
-                  {' | '}
-                  <small>
-                    <a href={`https://github.com/${node.frontmatter.github}`} aria-label="reply">
-                      <span className="icon is-small">
-                        <i className="fab fa-github" />
-                      </span>
-                      {' '}
-                      {node.frontmatter.github}
-                    </a>
-                  </small>
+                  <br />
+                  <a href={`https://github.com/${node.frontmatter.github}`} aria-label="reply">
+                    <span className="icon is-small">
+                      <i className="fab fa-github" />
+                    </span>
+                    {' '}
+                    {node.frontmatter.github}
+                  </a>
+                </p>
+                <p>
+                  &ldquo;
+                  {node.frontmatter.tagline}
+                  &ldquo;
                 </p>
                 <hr />
                 <div className="content">
-                  <p>{node.rawMarkdownBody}</p>
+                  <p className="is-family-monospace">{node.rawMarkdownBody}</p>
                 </div>
                 <Link to={node.fields.slug} className="button is-link">
                   View Storefront
@@ -102,6 +212,8 @@ const IndexPage = ({ data }) => {
                     <br />
                     github: Your github username
                     <br />
+                    tagline: A quick note about your prompt
+                    <br />
                     ---
                     <br />
                     Your text prompt. Max length is 500 words.
@@ -135,8 +247,8 @@ const IndexPage = ({ data }) => {
               </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
       <Footer />
     </div>
   );
@@ -149,23 +261,31 @@ IndexPage.propTypes = {
 export default IndexPage;
 
 export const query = graphql`
-   query {
-     allMarkdownRemark {
-       totalCount
-       edges {
-         node {
-           id
-           frontmatter {
+  query {
+    heroImage: file(relativePath: { eq: "shop.jpg" }) {
+      childImageSharp {
+        fluid(maxWidth: 300) {
+          ...GatsbyImageSharpFluid
+        }
+      }
+    }
+    allMarkdownRemark {
+      totalCount
+      edges {
+        node {
+          id
+          frontmatter {
             name
             author
             github
-           }
-           rawMarkdownBody
-           fields {
-             slug
-           }
-         }
-       }
-     }
-   }
+            tagline
+          }
+          rawMarkdownBody
+          fields {
+            slug
+          }
+        }
+      }
+    }
+  }
  `;

@@ -2,6 +2,7 @@
 name: Julia Child's Kitchenware
 author: Beau Davenport
 github: beaudavenport
+tagline: A paragraph from one of Julia Child's cookbooks.
 ---
 
 Theoretically a good cook should be able to perform under any cir- 

@@ -3,9 +3,13 @@ const sass = require('sass');
 module.exports = {
   pathPrefix: '/ai-storefront-generator',
   siteMetadata: {
-    title: 'Beau Davenport',
-    description: 'Full-Stack JS Dev',
-    author: '@beau_dav',
+    title: 'AI Storefront Generator',
+    titleTemplate: '%s | AI Storefront Generator',
+    description: 'AI-created e-commerce, for the Gatsby Silly Site Challeng, 2020.',
+    url: 'https://beaudavenport.github.io/ai-storefront-generator/',
+    image: '/images/shop.jpg',
+    author: 'Beau Davenport',
+    twitterUsername: 'beaudav',
   },
   plugins: [
     {
@@ -36,6 +40,14 @@ module.exports = {
         path: './src/pages/',
       },
       __key: 'pages',
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        path: `${__dirname}/src/images`,
+        name: 'images',
+      },
+      __key: 'images',
     },
   ],
 };
