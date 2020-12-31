@@ -56,8 +56,8 @@ const starsToSentiment = {
 };
 
 const createProductReview = async (productName, stars, index) => {
-  console.log('creating product review for ', productName);
   const prompt = `A ${starsToSentiment[stars]} review ${index} of ${productName}`;
+  console.log('creating ', prompt);
   const generatedText = await postTextGeneration(prompt);
   const reviewWithScore = {
     review: generatedText.split(prompt)[1],

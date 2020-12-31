@@ -186,13 +186,10 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // Create storefront layout and product pages based on results of analysis for each prompt.
   for await (const edge of result.data.allMarkdownRemark.edges) {
     const { node } = edge;
-    console.log('i am getting called');
     const textAnalysis = await googleLanguageAPIService.getTextAnalysis(node.excerpt);
     await createMainStorefrontPage(createPage, node);
     await createAboutUsPage(createPage, node, textAnalysis);
     await createProductPages(createPage, node, textAnalysis);
-    console.log('gonna resolve now');
   }
-  console.log('now you call me at long last');
   return Promise.resolve();
 };

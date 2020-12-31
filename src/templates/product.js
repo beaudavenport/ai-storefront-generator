@@ -36,7 +36,7 @@ export default function ProductTemplate({ data, pageContext }) {
                 <div>
                   <p className="title">{pageContext.productName}</p>
                   <p className="subtitle">{pageContext.productPrice}</p>
-                  {sitePage.context.productDescription.split('\n').slice(0, 2).map((paragraph) => (
+                  {sitePage.context.productDescription.split('\n').slice(0, 4).map((paragraph) => (
                     <p className="block" key={paragraph}>{paragraph}</p>
                   ))}
                   <div className="is-flex is-justify-content-center">
