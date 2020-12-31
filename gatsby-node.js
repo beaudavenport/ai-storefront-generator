@@ -69,7 +69,7 @@ const createProductPages = async (createPage, node, textAnalysis) => {
       console.log('failed to make review 2. falling back to mock', ex);
       review2 = await mockDeepAIAPIService.createProductReview(consumerGood.name, stars);
     }
-    const imageUrl = await deepAIAPIService.postText2Image(node.frontmatter.name);
+    const imageUrl = await deepAIAPIService.postText2Image(consumerGood.name);
 
     createPage({
       path: `${node.fields.slug}${slugify(consumerGood.name)}`,
