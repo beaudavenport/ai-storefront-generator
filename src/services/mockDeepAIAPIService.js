@@ -138,15 +138,11 @@ const createProductReview = async (productName, productSentimentScore) => {
   return Promise.resolve(reviewWithScore);
 };
 
-const createAboutUs = async (storeName, locations) => {
-  const prompt = `The story of ${storeName} begins in ${locations.length ? `${locations[0]}.` : ' a commitment to quality.'}`;
-  const aboutUs = {
-    title: prompt,
-    text: fakeAboutUsResponse.output.split(prompt)[1],
-    imageUrl: 'https://image.shutterstock.com/image-vector/ui-image-placeholder-wireframes-apps-260nw-1037719204.jpg',
-  };
-  return Promise.resolve(aboutUs);
-};
+const createAboutUsDescription = async (_, prompt) => Promise.resolve(
+  fakeAboutUsResponse.output.split(prompt)[1],
+);
+
+const createAboutUsImage = async () => Promise.resolve('https://image.shutterstock.com/image-vector/ui-image-placeholder-wireframes-apps-260nw-1037719204.jpg');
 
 const postText2Image = async () => {
   const imageUrl = Promise.resolve('https://placekitten.com/300/300');
@@ -156,6 +152,7 @@ const postText2Image = async () => {
 module.exports = {
   createProductReview,
   createProductDescription,
-  createAboutUs,
+  createAboutUsImage,
+  createAboutUsDescription,
   postText2Image,
 };

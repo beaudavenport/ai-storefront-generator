@@ -7,7 +7,9 @@ const Footer = () => (
         © Beau Davenport,
         {' '}
         {new Date().getFullYear()}
-        . Built with
+      </p>
+      <p>
+        Built with
         {' '}
         <a href="https://www.gatsbyjs.org"><strong>Gatsby</strong></a>
       </p>

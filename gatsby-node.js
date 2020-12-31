@@ -4,10 +4,12 @@ const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
 const { createRemoteFileNode } = require('gatsby-source-filesystem');
 const slugify = require('slugify');
+const realDeepAIAPIService = require('./src/services/deepAIAPIService');
+const mockDeepAIAPIService = require('./src/services/mockDeepAIAPIService');
 
 const MOCK_SERVICES = false;
 
-const deepAIAPIService = MOCK_SERVICES ? require('./src/services/mockDeepAIAPIService') : require('./src/services/deepAIAPIService');
+const deepAIAPIService = MOCK_SERVICES ? mockDeepAIAPIService : realDeepAIAPIService;
 const googleLanguageAPIService = MOCK_SERVICES ? require('./src/services/mockGoogleLanguageAPIService') : require('./src/services/googleLanguageAPIService');
 
 const createMainStorefrontPage = async (createPage, node) => {
@@ -46,10 +48,29 @@ const createProductPages = async (createPage, node, textAnalysis) => {
   const consumerGoods = textAnalysis.filter((entity) => entity.type === 'CONSUMER_GOOD');
   for await (const consumerGood of consumerGoods) {
     const stars = getProductStars(consumerGood.sentiment.score);
-    const review1 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
-    const review2 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
-    const productDescription = await deepAIAPIService.createProductDescription(consumerGood.name);
+    let review1;
+    let review2;
+    let productDescription;
+    try {
+      productDescription = await deepAIAPIService.createProductDescription(consumerGood.name);
+    } catch (ex) {
+      console.log('failed to make product description. falling back to mock', ex);
+      productDescription = await mockDeepAIAPIService.createProductDescription(consumerGood.name);
+    }
+    try {
+      review1 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
+    } catch (ex) {
+      console.log('failed to make review 1. falling back to mock', ex);
+      review1 = await mockDeepAIAPIService.createProductReview(consumerGood.name, stars);
+    }
+    try {
+      review2 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
+    } catch (ex) {
+      console.log('failed to make review 2. falling back to mock', ex);
+      review2 = await mockDeepAIAPIService.createProductReview(consumerGood.name, stars);
+    }
     const imageUrl = await deepAIAPIService.postText2Image(node.frontmatter.name);
+
     createPage({
       path: `${node.fields.slug}${slugify(consumerGood.name)}`,
       component: productTemplate,

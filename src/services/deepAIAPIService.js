@@ -46,7 +46,7 @@ const postTextGeneration = async (text) => {
 const createProductDescription = async (productName) => {
   console.log('getting product description for ', productName);
   const response = await postTextGeneration(`${productName} are`);
-  return response.output;
+  return response;
 };
 
 const starsToSentiment = {

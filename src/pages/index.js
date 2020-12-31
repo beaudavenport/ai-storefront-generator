@@ -72,17 +72,10 @@ const IndexPage = ({ data }) => {
             <em>Products</em>
             {' '}
             page (with a list of all the entities
-            considered a
-            {' '}
-            <strong>CONSUMER_GOOD</strong>
-            {' '}
+            considered a CONSUMER_GOOD
             based on Google&apos;s Natural Language analysis), individual
             product details pages (which include reviews based on the sentiment analysis of
-            the
-            {' '}
-            <strong>CONSUMER_GOOD</strong>
-            {' '}
-            in the original text), and an
+            the CONSUMER_GOOD in the original text), and an
             {' '}
             <em>About Us</em>
             {' '}
