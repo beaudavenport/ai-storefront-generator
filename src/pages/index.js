@@ -210,7 +210,7 @@ const IndexPage = ({ data }) => {
                     <br />
                     ---
                     <br />
-                    Your text prompt. Max length is 500 words.
+                    Your text prompt. Max length is 2000 characters.
                     This will be used to generate the content for your storefront!
                     <br />
                     <br />
