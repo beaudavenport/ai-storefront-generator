@@ -58,13 +58,13 @@ const createProductPages = async (createPage, node, textAnalysis) => {
       productDescription = await mockDeepAIAPIService.createProductDescription(consumerGood.name);
     }
     try {
-      review1 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
+      review1 = await deepAIAPIService.createProductReview(consumerGood.name, stars, 1);
     } catch (ex) {
       console.log('failed to make review 1. falling back to mock', ex);
       review1 = await mockDeepAIAPIService.createProductReview(consumerGood.name, stars);
     }
     try {
-      review2 = await deepAIAPIService.createProductReview(consumerGood.name, stars);
+      review2 = await deepAIAPIService.createProductReview(consumerGood.name, stars, 2);
     } catch (ex) {
       console.log('failed to make review 2. falling back to mock', ex);
       review2 = await mockDeepAIAPIService.createProductReview(consumerGood.name, stars);

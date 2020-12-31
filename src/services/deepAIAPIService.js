@@ -18,7 +18,7 @@ const postText2Image = async (text) => {
     await sleep();
     return response.data.output_url;
   } catch (ex) {
-    console.log(ex.response);
+    console.log('Error calling to Deep AI API');
     throw ex;
   }
 };
@@ -38,7 +38,7 @@ const postTextGeneration = async (text) => {
     await sleep();
     return response.data.output;
   } catch (ex) {
-    console.log(ex.response);
+    console.log('Error calling to Deep AI API');
     throw ex;
   }
 };
@@ -55,9 +55,9 @@ const starsToSentiment = {
   5: 'positive',
 };
 
-const createProductReview = async (productName, stars) => {
+const createProductReview = async (productName, stars, index) => {
   console.log('creating product review for ', productName);
-  const prompt = `A ${starsToSentiment[stars]} review of ${productName}`;
+  const prompt = `A ${starsToSentiment[stars]} review ${index} of ${productName}`;
   const generatedText = await postTextGeneration(prompt);
   const reviewWithScore = {
     review: generatedText.split(prompt)[1],
