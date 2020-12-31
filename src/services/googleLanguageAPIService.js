@@ -8,11 +8,16 @@ const getTextAnalysis = async (text) => {
     },
   });
   const { entities } = response.data;
-  const entityNameAndTypes = entities.map((entity) => ({
-    name: entity.name,
-    type: entity.type,
-    sentiment: entity.sentiment,
-  }));
+  const entityNameAndTypes = [];
+  entities.forEach((entity) => {
+    if (!entityNameAndTypes.find((entry) => entry.name === entity.name)) {
+      entityNameAndTypes.push({
+        name: entity.name,
+        type: entity.type,
+        sentiment: entity.sentiment,
+      });
+    }
+  });
   return entityNameAndTypes;
 };
 

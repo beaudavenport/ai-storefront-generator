@@ -62,7 +62,7 @@ export default function ProductTemplate({ data, pageContext }) {
               </h4>
 
               {pageContext.reviews.map((review) => {
-                const paragraphs = review.review.split('A positive review of')[1].split('\n');
+                const paragraphs = review.review.split('\n');
                 return (
                   <div className="section" key={paragraphs[0]}>
                     <div className="is-flex is-justify-content-center">
